@@ -1,0 +1,12 @@
+$kind: http-request
+name: 28 / lấy danh sách vé
+description: API lấy danh sách vé
+url: "{{url}}/api/tickets"
+method: GET
+headers:
+  tokenByClass: "{{tokenByClass}}"
+body:
+  type: text
+  content: ""
+settings: {}
+order: 1000

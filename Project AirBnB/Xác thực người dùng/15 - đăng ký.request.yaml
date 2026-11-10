@@ -1,0 +1,27 @@
+$kind: http-request
+name: 15 / đăng ký
+description: API đăng ký
+url: "{{url}}/api/auth/register"
+method: POST
+headers:
+  tokenByClass: "{{tokenByClass}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Nguyễn Phong Kha\",\r
+
+    \  \"email\": \"kha9x0159@gmail.com\",\r
+
+    \  \"password\": \"123456\",\r
+
+    \  \"phone\": \"0909876987\",\r
+
+    \  \"birthday\": \"1998/05/11\",\r
+
+    \  \"gender\": true,\r
+
+    \  \"address\": \"191A Chường Trinh Quận 12\"\r
+
+    }"
+order: 2000

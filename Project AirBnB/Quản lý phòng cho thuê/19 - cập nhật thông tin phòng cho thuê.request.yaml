@@ -1,0 +1,48 @@
+$kind: http-request
+name: 19 / cập nhật thông tin phòng cho thuê
+description: API cập nhật thông tin phòng
+url: "{{url}}/api/rooms/60ab510c9db98f001509e34d"
+method: PUT
+headers:
+  tokenByClass: "{{tokenByClass}}"
+  token: "{{token_admin}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Khách Sạn Hồng Hào\",\r
+
+    \  \"guests\": 2,\r
+
+    \  \"bedRoom\": 2,\r
+
+    \  \"bath\": 3,\r
+
+    \  \"description\": \"Khách Sạn này dở ẹt\",\r
+
+    \  \"price\": 100000,\r
+
+    \  \"elevator\": false,\r
+
+    \  \"hotTub\": true,\r
+
+    \  \"pool\": true,\r
+
+    \  \"indoorFireplace\": false,\r
+
+    \  \"dryer\": true,\r
+
+    \  \"gym\": false,\r
+
+    \  \"kitchen\": true,\r
+
+    \  \"wifi\": true,\r
+
+    \  \"heating\": true,\r
+
+    \  \"cableTV\": true,\r
+
+    \  \"locationId\": \"6098b6ca710a3d0500274de9\"\r
+
+    }"
+order: 4000

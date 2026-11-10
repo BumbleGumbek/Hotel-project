@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Build
+dist/
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Editor
+.vscode/
+
+# OS
+.DS_Store
+**/.DS_Store
+Thumbs.db
+__MACOSX/
+**/__MACOSX/
+
+# Backup
+*.zip
+*.rar
+*.tar.gz
+.src/

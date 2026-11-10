@@ -1,0 +1,17 @@
+$kind: http-request
+name: 9 / lấy danh sách vị trí
+description: API lấy danh sách vị trí du lịch ( có phân trang , và search theo location )
+url: "{{url}}/api/locations?location=bến ninh"
+method: GET
+headers:
+  tokenByClass: "{{tokenByClass}}"
+queryParams:
+  - key: limit
+    value: "2"
+    disabled: true
+  - key: skip
+    value: "1"
+    disabled: true
+  - key: location
+    value: bến ninh
+order: 3000

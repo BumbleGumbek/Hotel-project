@@ -1,0 +1,16 @@
+$kind: http-request
+name: 33 / lấy danh sách vé theo người dùng
+url: "{{url}}/api/tickets/by-user?userId=60e2b055e22b6b3b70243098"
+method: GET
+headers:
+  tokenByClass: "{{tokenByClass}}"
+queryParams:
+  - key: userId
+    value: 60e2b055e22b6b3b70243098
+  - key: skip
+    value: "0"
+    disabled: true
+  - key: limit
+    value: "0"
+    disabled: true
+order: 6000

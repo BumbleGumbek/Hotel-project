@@ -1,0 +1,493 @@
+/* ==========================================================================
+   UserProfile - Modern Luxury Boutique Hotel Stylesheet (Plain CSS)
+   ========================================================================== */
+
+/* Page Background & Layout */
+.luxury-profile-page {
+  background-color: #faf8f5;
+  color: #2b2520;
+  min-height: 100vh;
+  padding-bottom: 70px;
+}
+
+.luxury-profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 15px 0 15px;
+}
+
+/* Breadcrumbs */
+.luxury-profile-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #8c7e70;
+  margin-bottom: 24px;
+}
+
+.luxury-profile-breadcrumbs a {
+  color: #8c7e70;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.luxury-profile-breadcrumbs a:hover {
+  color: #b38e44;
+}
+
+.luxury-profile-breadcrumbs .separator {
+  font-size: 11px;
+  color: #c4b5a5;
+}
+
+.luxury-profile-breadcrumbs .current {
+  color: #2b2520;
+  font-weight: 600;
+}
+
+/* Profile Banner */
+.luxury-profile-banner {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(223, 186, 115, 0.3);
+  box-shadow: 0 6px 24px rgba(43, 37, 32, 0.05);
+  padding: 28px 32px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.luxury-profile-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.luxury-profile-avatar-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #2b2520;
+  color: #dfba73;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  border: 2px solid #dfba73;
+  box-shadow: 0 4px 15px rgba(223, 186, 115, 0.25);
+  flex-shrink: 0;
+}
+
+.luxury-profile-banner-text .welcome-eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b38e44;
+  margin-bottom: 4px;
+}
+
+.luxury-profile-banner-text h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2b2520;
+  margin: 0 0 6px 0;
+}
+
+.luxury-profile-banner-text p {
+  font-size: 13.5px;
+  color: #7a6e61;
+  margin: 0;
+}
+
+.luxury-profile-banner-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.luxury-profile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(223, 186, 115, 0.15);
+  border: 1px solid rgba(223, 186, 115, 0.35);
+  border-radius: 20px;
+  color: #8a6a28;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.luxury-profile-badge i {
+  color: #b38e44;
+}
+
+/* Two Columns Layout */
+.luxury-profile-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 4fr) minmax(0, 8fr);
+  gap: 30px;
+  align-items: flex-start;
+}
+
+/* Left Sidebar Card */
+.luxury-profile-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid rgba(223, 186, 115, 0.25);
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(43, 37, 32, 0.03);
+  margin-bottom: 24px;
+}
+
+.luxury-profile-card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #2b2520;
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(223, 186, 115, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.luxury-profile-card-title i {
+  color: #b38e44;
+}
+
+.luxury-user-info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.luxury-user-info-list li {
+  padding: 10px 0;
+  border-bottom: 1px dashed #f0eae1;
+}
+
+.luxury-user-info-list li:last-child {
+  border-bottom: none;
+}
+
+.luxury-user-info-list .info-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8c7e70;
+  margin-bottom: 3px;
+}
+
+.luxury-user-info-list .info-label i {
+  color: #b38e44;
+  font-size: 13px;
+}
+
+.luxury-user-info-list .info-val {
+  font-size: 14px;
+  color: #2b2520;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+/* Right Content: Booking History */
+.luxury-history-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.luxury-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(223, 186, 115, 0.25);
+}
+
+.luxury-history-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2b2520;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.luxury-history-header h2 i {
+  color: #b38e44;
+}
+
+.luxury-history-header .count-tag {
+  font-size: 13px;
+  color: #7a6e61;
+}
+
+.luxury-history-header .count-tag strong {
+  color: #b38e44;
+}
+
+/* Booking Cards */
+.luxury-booking-item-card {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid rgba(223, 186, 115, 0.25);
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(43, 37, 32, 0.04);
+  transition: all 0.3s ease;
+}
+
+.luxury-booking-item-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(223, 186, 115, 0.5);
+  box-shadow: 0 8px 24px rgba(43, 37, 32, 0.08);
+}
+
+.luxury-booking-card-media {
+  position: relative;
+  height: 100%;
+  min-height: 180px;
+  background-color: #eee;
+  overflow: hidden;
+}
+
+.luxury-booking-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.luxury-booking-tier-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  background: rgba(30, 25, 20, 0.85);
+  backdrop-filter: blur(4px);
+  color: #dfba73;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: 1px solid rgba(223, 186, 115, 0.3);
+}
+
+.luxury-booking-card-body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.luxury-booking-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.luxury-booking-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2b2520;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.luxury-booking-price-badge {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.luxury-booking-price-badge .price-num {
+  font-size: 17px;
+  font-weight: 700;
+  color: #b38e44;
+}
+
+.luxury-booking-price-badge .price-sub {
+  display: block;
+  font-size: 11px;
+  color: #8c7e70;
+}
+
+/* Stay Dates Grid */
+.luxury-booking-dates {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 14px;
+  background: #faf8f5;
+  border-radius: 8px;
+  border: 1px solid rgba(223, 186, 115, 0.2);
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.luxury-date-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.luxury-date-col .date-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #8c7e70;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.luxury-date-col .date-val {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #2b2520;
+}
+
+.luxury-date-arrow {
+  color: #dfba73;
+  font-size: 14px;
+}
+
+/* Card Bottom Footer */
+.luxury-booking-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f2ece3;
+  padding-top: 12px;
+}
+
+.luxury-booking-id {
+  font-size: 12px;
+  color: #8c7e70;
+}
+
+.luxury-booking-id strong {
+  color: #5c5248;
+}
+
+.luxury-view-room-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: #faf6f0;
+  border: 1px solid rgba(223, 186, 115, 0.4);
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #2b2520;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.luxury-view-room-link:hover {
+  background: #2b2520;
+  color: #dfba73;
+  border-color: #2b2520;
+}
+
+/* Empty State */
+.luxury-history-empty {
+  padding: 60px 20px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px dashed rgba(223, 186, 115, 0.4);
+  margin: 10px 0;
+}
+
+.luxury-history-empty .empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(223, 186, 115, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+  color: #b38e44;
+  font-size: 24px;
+}
+
+.luxury-history-empty h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2b2520;
+  margin: 0 0 8px 0;
+}
+
+.luxury-history-empty p {
+  font-size: 13.5px;
+  color: #7a6e61;
+  margin: 0 0 20px 0;
+}
+
+.luxury-book-now-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  background: #2b2520;
+  color: #dfba73;
+  border-radius: 25px;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.luxury-book-now-btn:hover {
+  background: #b38e44;
+  color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .luxury-profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .luxury-profile-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 767px) {
+  .luxury-booking-item-card {
+    grid-template-columns: 1fr;
+  }
+
+  .luxury-booking-card-media {
+    height: 180px;
+  }
+
+  .luxury-profile-banner-left {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .luxury-booking-card-top {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .luxury-booking-price-badge {
+    text-align: left;
+  }
+}

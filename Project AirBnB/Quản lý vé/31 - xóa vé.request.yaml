@@ -1,0 +1,9 @@
+$kind: http-request
+name: 31 / xóa vé
+description: xóa vé
+url: "{{url}}/api/tickets/60c3267a900ea640e0fe4e46"
+method: DELETE
+headers:
+  token: "{{token_admin}}"
+  tokenByClass: "{{tokenByClass}}"
+order: 4000

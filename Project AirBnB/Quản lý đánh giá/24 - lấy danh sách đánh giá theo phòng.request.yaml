@@ -1,0 +1,10 @@
+$kind: http-request
+name: 24 / lấy danh sách đánh giá theo phòng
+description: API lấy bình luận theo phòng
+url: "{{url}}/api/reviews/byRoom?roomId=60e2aea0b8b48640745a0b9c"
+method: GET
+headers:
+  tokenByClass: "{{tokenByClass}}"
+queryParams:
+  roomId: 60e2aea0b8b48640745a0b9c
+order: 2000

@@ -1,0 +1,9 @@
+$kind: http-request
+name: 25 / xóa đánh giá
+description: API xóa bình luận
+url: "{{url}}/api/reviews/60c31d879145e66a3bb0985e"
+method: DELETE
+headers:
+  token: "{{token_admin}}"
+  tokenByClass: "{{tokenByClass}}"
+order: 3000

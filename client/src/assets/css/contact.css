@@ -1,0 +1,126 @@
+.hotel-contact-page {
+  padding-bottom: 70px;
+  color: #2b2520;
+}
+
+.hotel-contact-heading {
+  padding: 75px 0;
+  background: #f5f1eb;
+  text-align: center;
+}
+
+.hotel-contact-label {
+  color: #a88755;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.hotel-contact-heading h1 {
+  margin: 15px 0;
+  font-size: 36px;
+  font-weight: 600;
+}
+
+.hotel-contact-heading p {
+  max-width: 600px;
+  margin: 0 auto;
+  color: #77716b;
+  line-height: 1.8;
+}
+
+.hotel-contact-content {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 60px;
+  padding-top: 65px;
+}
+
+.hotel-contact-info h2,
+.hotel-contact-form h2 {
+  margin: 15px 0;
+  font-size: 25px;
+  line-height: 1.4;
+}
+
+.hotel-contact-info p {
+  color: #77716b;
+  line-height: 1.9;
+}
+
+.hotel-contact-form {
+  padding: 30px;
+  border: 1px solid #eee8df;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.hotel-contact-field {
+  margin-bottom: 20px;
+}
+
+.hotel-contact-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.hotel-contact-field input,
+.hotel-contact-field textarea {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1px solid #e5ded4;
+  border-radius: 5px;
+  background: #fff;
+  color: #2b2520;
+  font: inherit;
+}
+
+.hotel-contact-field textarea {
+  resize: vertical;
+}
+
+.hotel-contact-field input:focus,
+.hotel-contact-field textarea:focus {
+  outline: none;
+  border-color: #b59665;
+}
+
+.hotel-contact-submit {
+  padding: 13px 25px;
+  border: none;
+  border-radius: 5px;
+  background: #2b2520;
+  color: #fff;
+  cursor: pointer;
+}
+
+.hotel-contact-submit:hover {
+  background: #a88755;
+}
+
+.hotel-contact-notice {
+  margin-bottom: 15px;
+  color: #9a6c32;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .hotel-contact-heading {
+    padding: 50px 15px;
+  }
+
+  .hotel-contact-heading h1 {
+    font-size: 28px;
+  }
+
+  .hotel-contact-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding-top: 40px;
+  }
+
+  .hotel-contact-form {
+    padding: 20px;
+  }
+}

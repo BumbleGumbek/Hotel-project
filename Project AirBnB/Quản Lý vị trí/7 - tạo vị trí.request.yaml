@@ -1,0 +1,22 @@
+$kind: http-request
+name: 7 / tạo vị trí
+description: API thêm vị trí du lịch
+url: "{{url}}/api/locations"
+method: POST
+headers:
+  token: "{{token_admin}}"
+  tokenByClass: "{{tokenByClass}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Khu du lịch sinh thái Hồng Hào\",\r
+
+    \    \"province\" : \"Bến tre\",\r
+
+    \    \"country\": \"viet nam\",\r
+
+    \    \"valueate\" : 8\r
+
+    }"
+order: 1000

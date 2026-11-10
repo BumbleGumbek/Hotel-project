@@ -1,0 +1,12 @@
+$kind: http-request
+name: 2 / lấy thông tin chi tiết người dùng
+description: API lấy chi tiết người dùng
+url: "{{url}}/api/users/60c630afe881f92cf4539f29"
+method: GET
+headers:
+  tokenByClass: "{{tokenByClass}}"
+body:
+  type: text
+  content: ""
+settings: {}
+order: 2000

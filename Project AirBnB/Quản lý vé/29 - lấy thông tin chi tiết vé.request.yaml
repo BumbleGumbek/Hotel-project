@@ -1,0 +1,8 @@
+$kind: http-request
+name: 29 / lấy thông tin chi tiết vé
+description: API lấy chi tiết vé
+url: "{{url}}/api/tickets/60c3291e900ea640e0fe4e47"
+method: GET
+headers:
+  tokenByClass: "{{tokenByClass}}"
+order: 2000

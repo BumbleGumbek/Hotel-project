@@ -1,0 +1,731 @@
+/* ==========================================================================
+   RoomDetail - Modern Luxury Boutique Hotel Stylesheet (Plain CSS)
+   ========================================================================== */
+
+/* Container & Layout */
+.luxury-room-detail-page {
+  background-color: #faf8f5;
+  color: #2b2520;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  padding-bottom: 70px;
+}
+
+.luxury-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 15px 0 15px;
+}
+
+.luxury-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #8c7e70;
+  margin-bottom: 20px;
+}
+
+.luxury-breadcrumbs a {
+  color: #8c7e70;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.luxury-breadcrumbs a:hover {
+  color: #b38e44;
+}
+
+.luxury-breadcrumbs .breadcrumb-separator {
+  font-size: 11px;
+  color: #c4b5a5;
+}
+
+.luxury-breadcrumbs .current {
+  color: #2b2520;
+  font-weight: 600;
+}
+
+/* State Cards (Loading / Error / Empty) */
+.luxury-detail-state-card {
+  padding: 60px 24px;
+  margin: 30px 0 60px 0;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid rgba(223, 186, 115, 0.3);
+  box-shadow: 0 6px 20px rgba(43, 37, 32, 0.04);
+}
+
+.luxury-detail-state-card .state-icon-spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(223, 186, 115, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+  color: #b38e44;
+  font-size: 26px;
+  animation: luxurySpin 1.5s linear infinite;
+}
+
+@keyframes luxurySpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.luxury-detail-state-card .state-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(223, 186, 115, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+  color: #b38e44;
+  font-size: 24px;
+}
+
+.luxury-detail-state-card .state-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2b2520;
+  margin: 0 0 10px 0;
+}
+
+.luxury-detail-state-card .state-desc {
+  font-size: 14px;
+  color: #7a6e61;
+  max-width: 540px;
+  margin: 0 auto 24px auto;
+  line-height: 1.6;
+}
+
+.luxury-detail-state-card .state-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.luxury-detail-state-card .state-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 25px;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.luxury-detail-state-card .state-action-btn.primary {
+  background: #2b2520;
+  color: #dfba73;
+  border: 1px solid #2b2520;
+}
+
+.luxury-detail-state-card .state-action-btn.primary:hover {
+  background: #b38e44;
+  border-color: #b38e44;
+  color: #ffffff;
+}
+
+.luxury-detail-state-card .state-action-btn.secondary {
+  background: #faf8f5;
+  color: #403730;
+  border: 1px solid rgba(223, 186, 115, 0.4);
+}
+
+.luxury-detail-state-card .state-action-btn.secondary:hover {
+  background: #ffffff;
+  color: #b38e44;
+  border-color: #b38e44;
+}
+
+/* Header Area */
+.luxury-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(223, 186, 115, 0.25);
+}
+
+.luxury-detail-header-left {
+  flex: 1;
+}
+
+.luxury-detail-tier-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  background: #2b2520;
+  color: #dfba73;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(223, 186, 115, 0.4);
+}
+
+.luxury-detail-tier-badge.tier-vip {
+  background: #1f1a16;
+  color: #dfba73;
+}
+
+.luxury-detail-tier-badge.tier-premium {
+  background: #362e27;
+  color: #ebd3a7;
+}
+
+.luxury-detail-tier-badge.tier-standard {
+  background: #4a4037;
+  color: #ffffff;
+}
+
+.luxury-detail-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2b2520;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+}
+
+.luxury-detail-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #7a6e61;
+}
+
+.luxury-detail-location i {
+  color: #b38e44;
+}
+
+.luxury-detail-header-price {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.luxury-detail-header-price .price-from {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #8c7e70;
+  margin-bottom: 2px;
+}
+
+.luxury-detail-header-price .price-val {
+  font-size: 28px;
+  font-weight: 700;
+  color: #b38e44;
+  line-height: 1.2;
+}
+
+.luxury-detail-header-price .price-unit {
+  font-size: 13px;
+  color: #7a6e61;
+  margin-left: 4px;
+}
+
+/* Gallery Grid */
+.luxury-gallery-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 15px;
+  margin-bottom: 40px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(43, 37, 32, 0.08);
+}
+
+.luxury-gallery-main {
+  position: relative;
+  height: 440px;
+  background-color: #eee;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.luxury-gallery-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.luxury-gallery-main:hover img {
+  transform: scale(1.03);
+}
+
+.luxury-gallery-main .main-image-tag {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  padding: 6px 14px;
+  background: rgba(43, 37, 32, 0.75);
+  backdrop-filter: blur(4px);
+  color: #fdfcfb;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 20px;
+}
+
+.luxury-gallery-thumbs {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 15px;
+  height: 440px;
+}
+
+.luxury-gallery-thumb {
+  position: relative;
+  overflow: hidden;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.luxury-gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.luxury-gallery-thumb:hover img {
+  transform: scale(1.05);
+}
+
+.luxury-gallery-thumb .thumb-tag {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  background: rgba(43, 37, 32, 0.75);
+  backdrop-filter: blur(4px);
+  color: #fdfcfb;
+  font-size: 11px;
+  border-radius: 14px;
+}
+
+/* Two Column Content */
+.luxury-main-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(320px, 4fr);
+  gap: 35px;
+  align-items: flex-start;
+}
+
+/* Sections in Left Column */
+.luxury-section-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid rgba(223, 186, 115, 0.2);
+  padding: 28px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 16px rgba(43, 37, 32, 0.03);
+}
+
+.luxury-section-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2b2520;
+  margin: 0 0 18px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.luxury-section-heading i {
+  color: #b38e44;
+  font-size: 20px;
+}
+
+/* Quick Specs Row */
+.luxury-quick-specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.luxury-spec-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #faf8f5;
+  border-radius: 10px;
+  border: 1px solid rgba(223, 186, 115, 0.2);
+}
+
+.luxury-spec-item .spec-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(223, 186, 115, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b38e44;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.luxury-spec-item .spec-label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #8c7e70;
+  margin-bottom: 2px;
+}
+
+.luxury-spec-item .spec-val {
+  font-size: 15px;
+  font-weight: 700;
+  color: #2b2520;
+}
+
+.luxury-room-desc-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #5c5248;
+  margin: 0;
+}
+
+/* Amenities Grid */
+.luxury-amenities-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.luxury-amenity-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #faf8f5;
+  border-radius: 8px;
+  border: 1px solid rgba(223, 186, 115, 0.2);
+  font-size: 14px;
+  color: #403730;
+  font-weight: 500;
+}
+
+.luxury-amenity-pill i {
+  color: #b38e44;
+  font-size: 18px;
+  width: 22px;
+  text-align: center;
+}
+
+/* Sticky Booking Card (Right Side) */
+.luxury-sticky-sidebar {
+  position: sticky;
+  top: 90px;
+}
+
+.luxury-booking-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(223, 186, 115, 0.35);
+  box-shadow: 0 10px 30px rgba(43, 37, 32, 0.08);
+  padding: 28px;
+  margin-bottom: 22px;
+}
+
+.luxury-booking-price-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(223, 186, 115, 0.2);
+}
+
+.luxury-booking-price-header .main-price {
+  font-size: 26px;
+  font-weight: 700;
+  color: #b38e44;
+}
+
+.luxury-booking-price-header .price-suffix {
+  font-size: 13px;
+  color: #7a6e61;
+}
+
+.luxury-booking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+.luxury-form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #403730;
+  margin-bottom: 6px;
+}
+
+.luxury-form-group .select-input-wrap {
+  position: relative;
+}
+
+.luxury-form-group select {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  background: #faf8f5;
+  border: 1px solid rgba(223, 186, 115, 0.35);
+  border-radius: 8px;
+  font-size: 14px;
+  color: #2b2520;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.luxury-form-group select:focus {
+  border-color: #b38e44;
+  background: #ffffff;
+}
+
+.luxury-booking-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 50px;
+  background: #2b2520;
+  color: #dfba73;
+  border: 1px solid #2b2520;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(43, 37, 32, 0.15);
+}
+
+.luxury-booking-btn:hover {
+  background: #b38e44;
+  border-color: #b38e44;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(179, 142, 68, 0.3);
+}
+
+.luxury-booking-note {
+  text-align: center;
+  font-size: 12px;
+  color: #8c7e70;
+  margin: 8px 0 0 0;
+}
+
+/* Reception & Support Card */
+.luxury-support-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid rgba(223, 186, 115, 0.2);
+  padding: 22px;
+  box-shadow: 0 4px 16px rgba(43, 37, 32, 0.03);
+}
+
+.luxury-support-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.luxury-support-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(223, 186, 115, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b38e44;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.luxury-support-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2b2520;
+}
+
+.luxury-support-header span {
+  font-size: 12px;
+  color: #8c7e70;
+}
+
+.luxury-support-desc {
+  font-size: 13px;
+  color: #6d645a;
+  line-height: 1.55;
+  margin: 0 0 16px 0;
+}
+
+.luxury-contact-link-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 16px;
+  background: #faf8f5;
+  border: 1px solid rgba(223, 186, 115, 0.4);
+  border-radius: 8px;
+  color: #2b2520;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.luxury-contact-link-btn:hover {
+  background: #2b2520;
+  color: #dfba73;
+  border-color: #2b2520;
+}
+
+/* Mobile Sticky Footer */
+.luxury-mobile-booking-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-top: 1px solid rgba(223, 186, 115, 0.3);
+  padding: 12px 16px;
+  box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.08);
+  z-index: 999;
+}
+
+.luxury-mobile-booking-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.luxury-mobile-price .mobile-price-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: #b38e44;
+}
+
+.luxury-mobile-price .mobile-price-unit {
+  font-size: 11px;
+  color: #7a6e61;
+  margin-left: 2px;
+}
+
+.luxury-mobile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  background: #2b2520;
+  color: #dfba73;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 991px) {
+  .luxury-main-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .luxury-sticky-sidebar {
+    position: static;
+    margin-top: 25px;
+  }
+
+  .luxury-gallery-container {
+    height: auto;
+  }
+
+  .luxury-gallery-main {
+    height: 340px;
+  }
+
+  .luxury-gallery-thumbs {
+    height: 340px;
+  }
+}
+
+@media (max-width: 767px) {
+  .luxury-detail-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .luxury-detail-header-price {
+    text-align: left;
+  }
+
+  .luxury-detail-title {
+    font-size: 24px;
+  }
+
+  .luxury-gallery-container {
+    grid-template-columns: 1fr;
+  }
+
+  .luxury-gallery-thumbs {
+    display: none;
+  }
+
+  .luxury-gallery-main {
+    height: 250px;
+  }
+
+  .luxury-quick-specs {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .luxury-amenities-list {
+    grid-template-columns: 1fr;
+  }
+
+  .luxury-mobile-booking-bar {
+    display: block;
+  }
+
+  .luxury-room-detail-page {
+    padding-bottom: 90px;
+  }
+}

@@ -1,0 +1,22 @@
+$kind: http-request
+name: 32 / tạo vé
+description: API tạo vé
+url: "{{url}}/api/tickets"
+method: POST
+headers:
+  token: "{{token_admin}}"
+  tokenByClass: "{{tokenByClass}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"checkIn\": \"2021-05-12T17:00:00.000Z\",\r
+
+    \    \"checkOut\": \"2021-05-16T17:00:00.000Z\",\r
+
+    \    \"userId\": \"60c313c79145e66a3bb09857\",\r
+
+    \    \"roomId\": \"60c323cbc68f154164fdca1c\"\r
+
+    }"
+order: 5000

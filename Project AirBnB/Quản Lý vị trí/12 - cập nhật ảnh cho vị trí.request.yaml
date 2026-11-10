@@ -1,0 +1,14 @@
+$kind: http-request
+name: 12 / cập nhật ảnh cho vị trí
+url: "{{url}}/api/locations/upload-images/60c316b29145e66a3bb09858"
+method: POST
+headers:
+  token: "{{token_admin}}"
+  tokenByClass: "{{tokenByClass}}"
+body:
+  type: formdata
+  content:
+    - type: file
+      key: location
+      src: /C:/Users/hao9x/Pictures/ag/84118587_177433410190958_1717008705238597632_n.jpg
+order: 6000

@@ -1,0 +1,18 @@
+$kind: http-request
+name: 6 / cập nhật ảnh đại diện người dùng
+description: API cập nhật ảnh đại diện cho người dùng
+url: "{{url}}/api/users/upload-avatar"
+method: POST
+headers:
+  - key: token
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTJmMGQ5M2ExODAxNTAwMWMwMTFkMDQiLCJlbWFpbCI6ImtoYTl4MDE1OUBnbWFpbC5jb20iLCJ0eXBlIjoiQ0xJRU5UIiwiaWF0IjoxNjMwNDczNjYxfQ.8JgWF4GQ_7klcn4PudsMBwYtwtjIW-f0IgFA1jBuVIk
+    description: Hào
+  - key: tokenByClass
+    value: "{{tokenByClass}}"
+body:
+  type: formdata
+  content:
+    - type: file
+      key: avatar
+      src: /C:/Users/hao9x/Pictures/ag/95482478_679356936219219_1305451908005101568_n.jpg
+order: 6000

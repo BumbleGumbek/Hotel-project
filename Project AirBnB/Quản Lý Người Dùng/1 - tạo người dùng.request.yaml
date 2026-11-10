@@ -1,0 +1,30 @@
+$kind: http-request
+name: 1 / tạo người dùng
+description: API thêm người dùng
+url: "{{url}}/api/users"
+method: POST
+headers:
+  token: "{{token_admin}}"
+  tokenByClass: "{{tokenByClass}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"La Thuy\",\r
+
+    \  \"email\": \"thuy@gmail.com\",\r
+
+    \  \"password\": \"thuy0159\",\r
+
+    \  \"phone\": \"0934657867\",\r
+
+    \  \"birthday\": \"1998-05-11\",\r
+
+    \  \"gender\": true,\r
+
+    \  \"type\": \"ADMIN\",\r
+
+    \  \"address\": \"An Giang\"\r
+
+    }"
+order: 1000

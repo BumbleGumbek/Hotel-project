@@ -1,0 +1,8 @@
+$kind: http-request
+name: 10 / lấy thông tin chi tiết vị trí
+description: API lấy chi tiết vị trí du lịch
+url: "{{url}}/api/locations/617af2e4da03f39db76165fe"
+method: GET
+headers:
+  tokenByClass: "{{tokenByClass}}"
+order: 4000

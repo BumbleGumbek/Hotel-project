@@ -1,0 +1,11 @@
+$kind: http-request
+name: 13 / lấy sanh sách vị trí theo đánh giá
+url: "{{url}}/api/locations/by-valueate?valueate=5"
+method: GET
+headers:
+  tokenByClass: "{{tokenByClass}}"
+queryParams:
+  - key: valueate
+    value: "5"
+    description: đánh giá người dùng (1 - 10)
+order: 7000

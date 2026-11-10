@@ -1,0 +1,16 @@
+$kind: http-request
+name: 27 / cập nhật thông tin đánh giá
+description: API cập nhật bình luận
+url: "{{url}}/api/reviews/60c31d879145e66a3bb0985e"
+method: PUT
+headers:
+  tokenByClass: "{{tokenByClass}}"
+  token: "{{token_admin}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"content\" : \"thật sự quá đỉnh\"\r
+
+    }"
+order: 5000

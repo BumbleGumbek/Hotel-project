@@ -1,0 +1,11 @@
+$kind: http-request
+name: 4 / xóa người dùng
+description: API xóa người dùng theo id
+url: "{{url}}/api/users/60adebcf3992c4001544323e"
+method: DELETE
+headers:
+  token: "{{token_admin}}"
+  tokenByClass: "{{tokenByClass}}"
+body:
+  type: urlencoded
+order: 4000

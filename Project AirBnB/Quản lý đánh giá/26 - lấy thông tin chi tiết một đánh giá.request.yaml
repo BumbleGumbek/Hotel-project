@@ -1,0 +1,12 @@
+$kind: http-request
+name: 26 / lấy thông tin chi tiết một đánh giá
+description: API lấy thông tin chi tiết bình luận
+url: "{{url}}/api/reviews/60c31d5f9145e66a3bb0985d"
+method: GET
+headers:
+  tokenByClass: "{{tokenByClass}}"
+queryParams:
+  - key: ""
+    value: ""
+    disabled: true
+order: 4000

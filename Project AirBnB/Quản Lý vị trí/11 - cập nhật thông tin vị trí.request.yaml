@@ -1,0 +1,24 @@
+$kind: http-request
+name: 11 / cập nhật thông tin vị trí
+description: API cập nhật vị trí du lịch
+url: "{{url}}/api/locations/60c3220c9e2c3233f436e9e7"
+method: PUT
+headers:
+  token: "{{token_admin}}"
+  tokenByClass: "{{tokenByClass}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Long Xuyen\",\r
+
+    \    \"province\": \"An Giang\",\r
+
+    \    \"country\": \"VN\",\r
+
+    \     \"valueate\" : 8\r
+
+    \r
+
+    }"
+order: 5000

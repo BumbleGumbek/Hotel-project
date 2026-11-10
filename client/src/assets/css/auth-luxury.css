@@ -1,0 +1,306 @@
+/* ==========================================================================
+   Auth (SignIn & SignUp) - Modern Luxury Boutique Hotel Stylesheet (Plain CSS)
+   ========================================================================== */
+
+/* Fullscreen Page Background */
+.luxury-auth-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative;
+  padding: 40px 15px;
+  box-sizing: border-box;
+}
+
+.luxury-auth-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(24, 21, 18, 0.75) 0%,
+    rgba(35, 30, 26, 0.85) 100%
+  );
+  z-index: 1;
+}
+
+/* Card Modal */
+.luxury-auth-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 480px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(223, 186, 115, 0.35);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+  padding: 36px 32px 32px 32px;
+  box-sizing: border-box;
+}
+
+.luxury-auth-card.luxury-auth-card-wide {
+  max-width: 580px;
+}
+
+/* Close / Back to Home Button */
+.luxury-auth-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #faf8f5;
+  border: 1px solid rgba(223, 186, 115, 0.3);
+  color: #7a6e61;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.luxury-auth-close-btn:hover {
+  background: #2b2520;
+  color: #dfba73;
+  border-color: #2b2520;
+}
+
+/* Header */
+.luxury-auth-header {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.luxury-auth-eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b38e44;
+  margin-bottom: 6px;
+}
+
+.luxury-auth-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2b2520;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.3px;
+}
+
+.luxury-auth-subtitle {
+  font-size: 13.5px;
+  color: #7a6e61;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Form Fields */
+.luxury-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.luxury-auth-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.luxury-auth-field label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #403730;
+  margin-bottom: 6px;
+}
+
+.luxury-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.luxury-input-wrapper i {
+  position: absolute;
+  left: 14px;
+  font-size: 16px;
+  color: #b38e44;
+  pointer-events: none;
+}
+
+.luxury-input-wrapper input,
+.luxury-input-wrapper select {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px 0 42px;
+  background: #faf8f5;
+  border: 1px solid rgba(223, 186, 115, 0.35);
+  border-radius: 8px;
+  font-size: 14px;
+  color: #2b2520;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.luxury-input-wrapper input:focus,
+.luxury-input-wrapper select:focus {
+  border-color: #b38e44;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(223, 186, 115, 0.15);
+}
+
+.luxury-input-wrapper input::placeholder {
+  color: #aba093;
+}
+
+/* Grid Fields */
+.luxury-auth-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.luxury-birthday-selects {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.luxury-birthday-selects select {
+  width: 100%;
+  height: 46px;
+  padding: 0 10px;
+  background: #faf8f5;
+  border: 1px solid rgba(223, 186, 115, 0.35);
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: #2b2520;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.luxury-birthday-selects select:focus {
+  border-color: #b38e44;
+  background: #ffffff;
+}
+
+/* Extras row (Remember me & Forgot pass) */
+.luxury-auth-extras {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.luxury-auth-remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #63574c;
+  cursor: pointer;
+  user-select: none;
+}
+
+.luxury-auth-remember input {
+  accent-color: #b38e44;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.luxury-forgot-link {
+  color: #b38e44;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.luxury-forgot-link:hover {
+  color: #2b2520;
+  text-decoration: underline;
+}
+
+/* Submit Button */
+.luxury-auth-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 48px;
+  background: #2b2520;
+  color: #dfba73;
+  border: 1px solid #2b2520;
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(43, 37, 32, 0.15);
+}
+
+.luxury-auth-submit-btn:hover {
+  background: #b38e44;
+  border-color: #b38e44;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(179, 142, 68, 0.25);
+}
+
+/* Footer Switch Links */
+.luxury-auth-footer {
+  text-align: center;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #f0eae1;
+  font-size: 13.5px;
+  color: #7a6e61;
+}
+
+.luxury-auth-switch-link {
+  color: #b38e44;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.luxury-auth-switch-link:hover {
+  color: #2b2520;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .luxury-auth-card {
+    padding: 28px 20px 24px 20px;
+  }
+
+  .luxury-auth-title {
+    font-size: 22px;
+  }
+
+  .luxury-auth-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .luxury-birthday-selects {
+    grid-template-columns: 1fr;
+  }
+}

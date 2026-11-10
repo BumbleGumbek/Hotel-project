@@ -1,0 +1,28 @@
+$kind: http-request
+name: 5 / cập nhật người dùng
+description: API update người dùng theo id
+url: "{{url}}/api/users/60c321a09e2c3233f436e9ed"
+method: PUT
+headers:
+  token: "{{token_admin}}"
+  tokenByClass: "{{tokenByClass}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Nguyễn Phong Hào\",\r
+
+    \    \"email\": \"hao9x0159@gmail.com\",\r
+
+    \    \"phone\": \"0909876967\",\r
+
+    \    \"birthday\": \"1998-05-10T17:00:00.000Z\",\r
+
+    \    \"gender\": true,\r
+
+    \    \"address\": \"191A Chường Trinh Quận 12\",\r
+
+    \    \"type\": \"CLIENT\"\r
+
+    }"
+order: 5000

@@ -1,0 +1,98 @@
+.hotel-blog-heading {
+  padding: 65px 0;
+  background: #f5f1eb;
+  text-align: center;
+  color: #2b2520;
+}
+
+.hotel-blog-heading > .container > span {
+  color: #a88755;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.hotel-blog-heading h1 {
+  margin: 15px 0;
+  font-size: 36px;
+  font-weight: 600;
+}
+
+.hotel-blog-heading p {
+  color: #77716b;
+  line-height: 1.8;
+}
+
+.hotel-blog-breadcrumb {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.hotel-blog-breadcrumb a {
+  color: #a88755;
+}
+
+.hotel-blog-breadcrumb span {
+  color: #77716b;
+}
+
+.hotel-blog-content {
+  padding-top: 70px;
+  padding-bottom: 80px;
+}
+
+.hotel-blog-empty {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 55px 25px;
+  text-align: center;
+  border: 1px solid #eee8df;
+  border-radius: 8px;
+}
+
+.hotel-blog-icon {
+  color: #a88755;
+  font-size: 35px;
+}
+
+.hotel-blog-empty h2 {
+  margin: 20px 0 12px;
+  color: #2b2520;
+  font-size: 25px;
+}
+
+.hotel-blog-empty p {
+  color: #77716b;
+  line-height: 1.8;
+}
+
+.hotel-blog-button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 13px 24px;
+  border-radius: 5px;
+  background: #2b2520;
+  color: #fff;
+}
+
+.hotel-blog-button:hover {
+  background: #a88755;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .hotel-blog-heading {
+    padding: 45px 15px;
+  }
+
+  .hotel-blog-heading h1 {
+    font-size: 28px;
+  }
+
+  .hotel-blog-empty {
+    padding: 35px 20px;
+  }
+}

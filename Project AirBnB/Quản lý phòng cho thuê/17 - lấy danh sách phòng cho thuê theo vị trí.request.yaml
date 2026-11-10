@@ -1,0 +1,19 @@
+$kind: http-request
+name: 17 / lấy danh sách phòng cho thuê theo vị trí
+description: API lấy danh sách phòng ( phân trang và theo location )
+url: "{{url}}/api/rooms"
+method: GET
+headers:
+  tokenByClass: "{{tokenByClass}}"
+queryParams:
+  - key: locationId
+    value: 60e2a99366f6d30f8cfc67bc
+    disabled: true
+    description: long xuyen
+  - key: skip
+    value: "0"
+    disabled: true
+  - key: limit
+    value: "2"
+    disabled: true
+order: 2000

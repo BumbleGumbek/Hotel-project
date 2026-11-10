@@ -1,0 +1,12 @@
+$kind: http-request
+name: 18 / lấy thông tin chi tiết phòng cho thuê
+description: API lấy thông tin chi tiết phòng
+url: "{{url}}/api/rooms/60c31a069145e66a3bb0985a"
+method: GET
+headers:
+  tokenByClass: "{{tokenByClass}}"
+queryParams:
+  - key: ""
+    value: null
+    disabled: true
+order: 3000

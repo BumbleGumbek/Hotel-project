@@ -1,0 +1,26 @@
+$kind: http-request
+name: 30 / cập nhật thông tin vé
+description: API cập nhật thông tin vé
+url: "{{url}}/api/tickets/60c31b6f9145e66a3bb0985b"
+method: PUT
+headers:
+  token: "{{token_admin}}"
+  tokenByClass: "{{tokenByClass}}"
+queryParams:
+  - key: ""
+    value: ""
+    disabled: true
+body:
+  type: json
+  content: "{\r
+
+    \    \"checkIn\": \"2021-05-11T17:00:00.000Z\",\r
+
+    \    \"checkOut\": \"2022-05-15T17:00:00.000Z\",\r
+
+    \    \"userId\": \"60ab50479db98f001509e34c\",\r
+
+    \    \"roomId\": \"60c31a069145e66a3bb0985a\"\r
+
+    }"
+order: 3000

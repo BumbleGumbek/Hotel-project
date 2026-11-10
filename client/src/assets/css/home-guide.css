@@ -1,0 +1,67 @@
+.hotel-home-guide {
+  padding: 65px 0;
+  background: #fff;
+}
+
+.hotel-home-guide-heading {
+  margin-bottom: 35px;
+  text-align: center;
+}
+
+.hotel-home-guide-heading > span {
+  color: #a88755;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.hotel-home-guide-heading h3 {
+  margin: 12px 0;
+  color: #2b2520;
+  font-size: 28px;
+}
+
+.hotel-home-guide-heading p {
+  color: #77716b;
+  line-height: 1.7;
+}
+
+.hotel-home-guide-empty {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 35px 20px;
+  border: 1px solid #eee8df;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.hotel-home-guide-empty h4 {
+  color: #2b2520;
+  font-size: 19px;
+}
+
+.hotel-home-guide-empty p {
+  color: #77716b;
+  line-height: 1.7;
+}
+
+.hotel-home-guide-empty a {
+  display: inline-block;
+  margin-top: 12px;
+  color: #a88755;
+  font-weight: 600;
+}
+
+.hotel-home-guide-empty a:hover {
+  color: #2b2520;
+}
+
+@media (max-width: 768px) {
+  .hotel-home-guide {
+    padding: 45px 0;
+  }
+
+  .hotel-home-guide-heading h3 {
+    font-size: 24px;
+  }
+}

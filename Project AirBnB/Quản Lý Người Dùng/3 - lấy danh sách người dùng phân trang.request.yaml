@@ -1,0 +1,11 @@
+$kind: http-request
+name: 3 / lấy danh sách người dùng phân trang
+description: API lấy danh sách phân trang người dùng
+url: "{{url}}/api/users/pagination?skip=0&limit=3"
+method: GET
+headers:
+  tokenByClass: "{{tokenByClass}}"
+queryParams:
+  skip: "0"
+  limit: "3"
+order: 3000

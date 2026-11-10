@@ -1,0 +1,70 @@
+.hotel-plan-section {
+  padding: 70px 0;
+  background: #f9f7f3;
+}
+
+.hotel-plan-heading {
+  max-width: 650px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.hotel-plan-heading h3 {
+  color: #2b2520;
+  font-size: 27px;
+}
+
+.hotel-plan-heading p,
+.hotel-plan-card p {
+  color: #827970;
+  line-height: 1.8;
+}
+
+.hotel-plan-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.hotel-plan-card {
+  padding: 30px 24px;
+  border: 1px solid #eee8df;
+  border-radius: 7px;
+  background: #fff;
+  text-align: center;
+}
+
+.hotel-plan-icon {
+  display: flex;
+  width: 54px;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: #f8f0e4;
+  color: #a88755;
+  font-weight: 700;
+}
+
+.hotel-plan-card h4 {
+  color: #2b2520;
+  font-size: 17px;
+}
+
+.hotel-plan-card a {
+  display: inline-block;
+  margin-top: 8px;
+  color: #a88755;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .hotel-plan-list {
+    grid-template-columns: 1fr;
+  }
+
+  .hotel-plan-section {
+    padding: 45px 0;
+  }
+}

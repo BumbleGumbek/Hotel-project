@@ -1,0 +1,12 @@
+$kind: http-request
+name: 8 / xóa vị trí
+description: API xóa vị trí du lịch
+url: "{{url}}/api/locations/617af2f3da03f39db7616601"
+method: DELETE
+headers:
+  - key: token
+    value: "{{token_admin}}"
+    description: ADMIN
+  - key: tokenByClass
+    value: "{{tokenByClass}}"
+order: 2000

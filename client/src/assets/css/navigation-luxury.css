@@ -1,0 +1,407 @@
+/* ==========================================================================
+   Navigation (Header & Footer) - Modern Luxury Hotel Stylesheet (Plain CSS)
+   ========================================================================== */
+
+/* HEADER
+   -------------------------------------------------- */
+.luxury-header-wrapper {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(223, 186, 115, 0.25);
+  box-shadow: 0 2px 14px rgba(43, 37, 32, 0.05);
+  position: relative;
+  z-index: 999;
+}
+
+.luxury-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 82px;
+}
+
+/* Brand / Logo */
+.luxury-brand-area {
+  display: flex;
+  align-items: center;
+}
+
+.luxury-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.luxury-brand-logo-img {
+  height: 44px;
+  width: auto;
+  display: block;
+}
+
+.luxury-brand-title-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.luxury-brand-title {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #2b2520;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.luxury-brand-subtitle {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b38e44;
+  font-weight: 600;
+}
+
+/* Nav Menu (Desktop) */
+.luxury-nav-menu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 32px;
+}
+
+.luxury-nav-item a {
+  text-decoration: none;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #403730;
+  letter-spacing: 0.3px;
+  padding: 8px 0;
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.luxury-nav-item a:hover,
+.luxury-nav-item a.router-link-active,
+.luxury-nav-item a.current {
+  color: #b38e44;
+}
+
+.luxury-nav-item a.router-link-exact-active::after,
+.luxury-nav-item a.current::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #dfba73;
+  border-radius: 2px;
+}
+
+/* Right User Account Bar */
+.luxury-header-account {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.luxury-guest-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.luxury-guest-btn-signin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #2b2520;
+  text-decoration: none;
+  border-radius: 20px;
+  transition: all 0.25s ease;
+}
+
+.luxury-guest-btn-signin:hover {
+  color: #b38e44;
+}
+
+.luxury-guest-btn-signup {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #dfba73;
+  background: #2b2520;
+  border: 1px solid #2b2520;
+  text-decoration: none;
+  border-radius: 20px;
+  transition: all 0.25s ease;
+}
+
+.luxury-guest-btn-signup:hover {
+  background: #b38e44;
+  border-color: #b38e44;
+  color: #ffffff;
+}
+
+/* User Dropdown */
+.luxury-user-menu {
+  position: relative;
+}
+
+.luxury-user-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 25px;
+  background: #faf8f5;
+  border: 1px solid rgba(223, 186, 115, 0.35);
+  transition: all 0.25s ease;
+}
+
+.luxury-user-toggle:hover {
+  border-color: #b38e44;
+  background: #ffffff;
+}
+
+.luxury-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #2b2520;
+  color: #dfba73;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.luxury-user-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #2b2520;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.luxury-user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 220px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid rgba(223, 186, 115, 0.3);
+  box-shadow: 0 10px 30px rgba(43, 37, 32, 0.1);
+  list-style: none;
+  padding: 8px 0;
+  margin: 0;
+  z-index: 1000;
+}
+
+.luxury-user-dropdown li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  font-size: 13.5px;
+  color: #403730;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.luxury-user-dropdown li a i {
+  color: #b38e44;
+  font-size: 14px;
+}
+
+.luxury-user-dropdown li a:hover {
+  background: #faf8f5;
+  color: #b38e44;
+}
+
+.luxury-user-dropdown li.divider {
+  height: 1px;
+  background: #f0eae1;
+  margin: 6px 0;
+}
+
+/* Hamburger for Mobile */
+.luxury-mobile-toggle-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #2b2520;
+  cursor: pointer;
+  padding: 6px;
+}
+
+/* Mobile Nav Drawer */
+.luxury-mobile-nav {
+  display: none;
+  background: #ffffff;
+  border-top: 1px solid rgba(223, 186, 115, 0.2);
+  padding: 16px 20px 20px 20px;
+}
+
+.luxury-mobile-nav.open {
+  display: block;
+}
+
+.luxury-mobile-menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px 0;
+}
+
+.luxury-mobile-menu-list li a {
+  display: block;
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2b2520;
+  text-decoration: none;
+  border-bottom: 1px solid #f6f2ec;
+}
+
+.luxury-mobile-menu-list li a:hover {
+  color: #b38e44;
+}
+
+/* FOOTER
+   -------------------------------------------------- */
+.luxury-footer-wrapper {
+  background-color: #24201c;
+  color: #d1c7bc;
+  padding: 70px 0 0 0;
+  border-top: 2px solid #dfba73;
+}
+
+.luxury-footer-brand h3 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #f7eedf;
+  text-transform: uppercase;
+  margin: 0 0 4px 0;
+}
+
+.luxury-footer-brand .brand-sub {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #dfba73;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.luxury-footer-brand p {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #b8ada1;
+  margin: 0;
+  max-width: 320px;
+}
+
+.luxury-footer-col-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #dfba73;
+  margin: 0 0 18px 0;
+}
+
+.luxury-footer-links-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.luxury-footer-links-list li {
+  margin-bottom: 10px;
+}
+
+.luxury-footer-links-list li a {
+  font-size: 13.5px;
+  color: #d1c7bc;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.luxury-footer-links-list li a:hover {
+  color: #dfba73;
+  transform: translateX(4px);
+}
+
+.luxury-footer-links-list li a i {
+  font-size: 11px;
+  color: #b38e44;
+}
+
+/* Footer Bottom Bar */
+.luxury-footer-bottom {
+  margin-top: 50px;
+  padding: 22px 0;
+  border-top: 1px solid rgba(223, 186, 115, 0.2);
+  text-align: center;
+  font-size: 12.5px;
+  color: #9c9184;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .luxury-nav-menu {
+    display: none;
+  }
+
+  .luxury-mobile-toggle-btn {
+    display: block;
+  }
+
+  .luxury-footer-brand {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .luxury-brand-subtitle {
+    display: none;
+  }
+
+  .luxury-brand-title {
+    font-size: 17px;
+  }
+
+  .luxury-guest-btn-signin {
+    padding: 6px 10px;
+    font-size: 12.5px;
+  }
+
+  .luxury-guest-btn-signup {
+    padding: 6px 14px;
+    font-size: 12.5px;
+  }
+}
+/* Logo khách sạn */
+.luxury-brand-link img {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}

@@ -1,0 +1,18 @@
+$kind: http-request
+name: 23 / tạo một đánh giá
+description: API tạo bình luận
+url: "{{url}}/api/reviews?roomId=60c31a069145e66a3bb0985a"
+method: POST
+headers:
+  token: "{{token_admin}}"
+  tokenByClass: "{{tokenByClass}}"
+queryParams:
+  roomId: 60c31a069145e66a3bb0985a
+body:
+  type: json
+  content: "{\r
+
+    \    \"content\" : \"chổ ở như qq\"\r
+
+    }"
+order: 1000
