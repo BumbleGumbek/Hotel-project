@@ -1,15 +1,22 @@
 <template>
   <!-- Wrapper -->
   <div id="wrapper">
-    <the-banner></the-banner>
+    <the-banner :locations="locations"></the-banner>
 
     <!-- Content
 ================================================== -->
-    <the-categories></the-categories>
-    <!-- Category Boxes / End -->
+    <the-categories
+      :locations="locations"
+      :is-loading="locationsLoading"
+      :load-error="locationsError"
+    ></the-categories>
 
     <!-- Fullwidth Section -->
-    <the-places></the-places>
+    <the-places
+      :locations="locations"
+      :is-loading="locationsLoading"
+      :load-error="locationsError"
+    ></the-places>
     <!-- Fullwidth Section / End -->
 
     <the-reviews></the-reviews>
@@ -29,6 +36,7 @@
 </template>
 
 <script>
+import { onMounted, ref } from "vue";
 import TheBanner from "../components/home/TheBanner.vue";
 import TheCategories from "../components/home/TheCategories.vue";
 import ThePlaces from "../components/home/ThePlaces.vue";
@@ -48,7 +56,33 @@ export default {
   },
   setup() {
     const store = useStore();
+    const locations = ref([]);
+    const locationsLoading = ref(true);
+    const locationsError = ref("");
+
     store.dispatch("auth/loadUserLoginFromLocalStorageAction");
+
+    onMounted(async () => {
+      try {
+        await store.dispatch("location/getLocationListAction", "");
+        const locationList = store.state.location.locationList;
+        if (!Array.isArray(locationList)) {
+          throw new TypeError("API locations không trả về danh sách hợp lệ.");
+        }
+        locations.value = locationList;
+      } catch {
+        locationsError.value =
+          "Chưa thể tải danh sách địa điểm. Vui lòng thử lại sau.";
+      } finally {
+        locationsLoading.value = false;
+      }
+    });
+
+    return {
+      locations,
+      locationsLoading,
+      locationsError,
+    };
   },
 };
 </script>

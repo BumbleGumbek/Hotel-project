@@ -1,258 +1,268 @@
 <template>
-  <div class="luxury-amenities-section">
+  <section class="luxury-destination-categories">
     <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="luxury-section-header">
-            <span class="luxury-section-eyebrow">Tiện ích đẳng cấp</span>
-            <h2 class="luxury-section-title">Dịch vụ & Tiện ích</h2>
-            <div class="luxury-title-divider"></div>
-            <p class="luxury-section-desc">
-              Mang đến cho quý khách trải nghiệm lưu trú thư thái và trọn vẹn với các tiện nghi tiêu chuẩn.
-            </p>
+      <header class="destination-categories-header">
+        <span class="luxury-section-eyebrow">Khám phá điểm đến</span>
+        <h2 class="luxury-section-title">Tìm cảm hứng theo khu vực</h2>
+        <div class="luxury-title-divider"></div>
+        <p>
+          Khám phá những địa điểm lưu trú theo từng tỉnh thành và chọn nơi bắt
+          đầu hành trình.
+        </p>
+      </header>
+
+      <div v-if="isLoading" class="destination-category-state" role="status">
+        Đang tải danh sách điểm đến...
+      </div>
+      <div
+        v-else-if="loadError"
+        class="destination-category-state error"
+        role="alert"
+      >
+        {{ loadError }}
+      </div>
+      <div
+        v-else-if="!groupedLocations.length"
+        class="destination-category-state"
+      >
+        Hiện chưa có địa điểm để khám phá.
+      </div>
+      <div v-else class="destination-category-grid">
+        <article
+          v-for="group in groupedLocations"
+          :key="group.name"
+          class="destination-category-card"
+        >
+          <div class="destination-category-icon">
+            <i class="im im-icon-Map-Marker"></i>
           </div>
-        </div>
-
-        <div class="col-md-12">
-          <div class="luxury-amenities-grid">
-            <!-- 1. Internet không dây (wifi) -->
-            <div class="luxury-amenity-card">
-              <div class="amenity-icon-wrapper">
-                <i class="im im-icon-Wifi"></i>
-              </div>
-              <h4 class="amenity-name">Internet không dây</h4>
-              <span class="amenity-badge">Tốc độ cao</span>
-            </div>
-
-            <!-- 2. Thang máy tòa nhà (elevator) -->
-            <div class="luxury-amenity-card">
-              <div class="amenity-icon-wrapper">
-                <i class="im im-icon-Building"></i>
-              </div>
-              <h4 class="amenity-name">Thang máy tòa nhà</h4>
-              <span class="amenity-badge">Tiện lợi</span>
-            </div>
-
-            <!-- 3. Chỗ đậu xe khuôn viên (parking) -->
-            <div class="luxury-amenity-card">
-              <div class="amenity-icon-wrapper">
-                <i class="im im-icon-Car-2"></i>
-              </div>
-              <h4 class="amenity-name">Chỗ đậu xe miễn phí</h4>
-              <span class="amenity-badge">Trong khuôn viên</span>
-            </div>
-
-            <!-- 4. Hồ bơi thư giãn (pool) -->
-            <div class="luxury-amenity-card">
-              <div class="amenity-icon-wrapper">
-                <i class="im im-icon-Swimming"></i>
-              </div>
-              <h4 class="amenity-name">Hồ bơi thư giãn</h4>
-              <span class="amenity-badge">Tiện ích</span>
-            </div>
-
-            <!-- 5. Bồn nước nóng thư giãn (hotTub) -->
-            <div class="luxury-amenity-card">
-              <div class="amenity-icon-wrapper">
-                <i class="im im-icon-Bathtub"></i>
-              </div>
-              <h4 class="amenity-name">Bồn tắm nước nóng</h4>
-              <span class="amenity-badge">Thư giãn</span>
-            </div>
-
-            <!-- 6. Truyền hình cáp (cableTV) -->
-            <div class="luxury-amenity-card">
-              <div class="amenity-icon-wrapper">
-                <i class="im im-icon-Old-TV"></i>
-              </div>
-              <h4 class="amenity-name">Truyền hình cáp</h4>
-              <span class="amenity-badge">Giải trí</span>
-            </div>
+          <div class="destination-category-content">
+            <h3>{{ group.name }}</h3>
+            <span>{{ group.locations.length }} điểm đến</span>
+            <ul>
+              <li
+                v-for="location in group.locations"
+                :key="location.id || location._id || location.name"
+              >
+                <router-link
+                  v-if="location.id || location._id"
+                  :to="{
+                    name: 'Rooms',
+                    params: { locationId: location.id || location._id },
+                  }"
+                >
+                  {{ location.name }}
+                  <i class="im im-icon-Right-2"></i>
+                </router-link>
+                <span v-else>{{ location.name }}</span>
+              </li>
+            </ul>
           </div>
-        </div>
+        </article>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
+import { computed } from "vue";
+
 export default {
   name: "TheCategories",
+  props: {
+    locations: {
+      type: Array,
+      default: () => [],
+    },
+    isLoading: {
+      type: Boolean,
+      default: false,
+    },
+    loadError: {
+      type: String,
+      default: "",
+    },
+  },
+  setup(props) {
+    const groupedLocations = computed(() => {
+      const groups = new Map();
+      props.locations.forEach((location) => {
+        const name = location.province || location.country || "Điểm đến khác";
+        if (!groups.has(name)) groups.set(name, []);
+        groups.get(name).push(location);
+      });
+
+      return Array.from(groups, ([name, locations]) => ({ name, locations }));
+    });
+
+    return {
+      groupedLocations,
+    };
+  },
 };
 </script>
 
 <style scoped lang="scss">
-.luxury-amenities-section {
-  padding: 75px 0 65px 0;
-  background-color: #ffffff;
+.luxury-destination-categories {
+  padding: 72px 0 78px;
+  background: #fff;
+}
 
-  .luxury-section-header {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 45px auto;
+.destination-categories-header {
+  max-width: 720px;
+  margin: 0 auto 38px;
+  text-align: center;
 
-    .luxury-section-eyebrow {
-      display: inline-block;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: #b38e44;
-      margin-bottom: 8px;
-    }
-
-    .luxury-section-title {
-      font-size: 32px;
-      font-weight: 700;
-      color: #2b2520;
-      letter-spacing: -0.5px;
-      margin: 0 0 14px 0;
-    }
-
-    .luxury-title-divider {
-      width: 50px;
-      height: 2px;
-      background: #dfba73;
-      margin: 0 auto 16px auto;
-    }
-
-    .luxury-section-desc {
-      font-size: 15px;
-      color: #6d645a;
-      line-height: 1.6;
-      margin: 0;
-    }
+  .luxury-section-eyebrow {
+    color: #b38e44;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
   }
 
-  .luxury-amenities-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 20px;
-    margin-bottom: 20px;
+  .luxury-section-title {
+    margin: 10px 0 14px;
+    color: #2b2520;
+    font-size: 32px;
+    font-weight: 700;
   }
 
-  .luxury-amenity-card {
-    background: #faf8f5;
-    border: 1px solid rgba(223, 186, 115, 0.25);
-    border-radius: 12px;
-    padding: 26px 16px 22px 16px;
-    text-align: center;
+  .luxury-title-divider {
+    width: 50px;
+    height: 2px;
+    margin: 0 auto 16px;
+    background: #dfba73;
+  }
+
+  p {
+    margin: 0;
+    color: #6d645a;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+}
+
+.destination-category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.destination-category-card {
+  display: flex;
+  gap: 16px;
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid rgba(223, 186, 115, 0.28);
+  border-radius: 14px;
+  background: #faf8f5;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(43, 37, 32, 0.08);
+  }
+
+  .destination-category-icon {
     display: flex;
-    flex-direction: column;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
     align-items: center;
     justify-content: center;
-    transition: all 0.35s ease;
-    cursor: default;
+    border-radius: 50%;
+    background: rgba(223, 186, 115, 0.2);
+    color: #a77f35;
+    font-size: 19px;
+  }
 
-    .amenity-icon-wrapper {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      background: rgba(223, 186, 115, 0.15);
-      border: 1px solid rgba(223, 186, 115, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 14px;
-      transition: all 0.35s ease;
+  .destination-category-content {
+    min-width: 0;
+    flex: 1;
+  }
 
-      i {
-        font-size: 24px;
-        color: #b38e44;
-        transition: all 0.35s ease;
-      }
-    }
+  h3 {
+    margin: 0 0 4px;
+    color: #2b2520;
+    font-size: 17px;
+    font-weight: 700;
+  }
 
-    .amenity-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: #2b2520;
-      margin: 0 0 8px 0;
-      line-height: 1.35;
-      transition: color 0.35s ease;
-    }
+  span {
+    color: #827970;
+    font-size: 12px;
+  }
 
-    .amenity-badge {
-      font-size: 11px;
-      font-weight: 500;
-      color: #8c7e70;
-      background: #eee8df;
-      padding: 3px 10px;
-      border-radius: 12px;
-      letter-spacing: 0.3px;
-    }
+  ul {
+    display: grid;
+    gap: 8px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li,
+  li a {
+    color: #5e5143;
+    font-size: 13px;
+  }
+
+  li a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    text-decoration: none;
 
     &:hover {
-      transform: translateY(-5px);
-      background: #ffffff;
-      border-color: #dfba73;
-      box-shadow: 0 10px 24px rgba(43, 37, 32, 0.08);
+      color: #a77f35;
+    }
 
-      .amenity-icon-wrapper {
-        background: #2b2520;
-        border-color: #2b2520;
-
-        i {
-          color: #dfba73;
-        }
-      }
-
-      .amenity-name {
-        color: #b38e44;
-      }
+    i {
+      color: #b38e44;
+      font-size: 11px;
     }
   }
+}
 
-  @media (max-width: 1200px) {
-    .luxury-amenities-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
+.destination-category-state {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 26px;
+  border: 1px solid rgba(223, 186, 115, 0.28);
+  border-radius: 12px;
+  color: #6d645a;
+  background: #faf8f5;
+  text-align: center;
+
+  &.error {
+    color: #a63c32;
+  }
+}
+
+@media (max-width: 991px) {
+  .destination-category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .luxury-destination-categories {
+    padding: 50px 0;
   }
 
-  @media (max-width: 768px) {
-    padding: 50px 0 45px 0;
-
-    .luxury-section-header {
-      margin-bottom: 30px;
-
-      .luxury-section-title {
-        font-size: 24px;
-      }
-
-      .luxury-section-desc {
-        font-size: 14px;
-      }
-    }
-
-    .luxury-amenities-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-
-    .luxury-amenity-card {
-      padding: 20px 12px 18px 12px;
-
-      .amenity-icon-wrapper {
-        width: 46px;
-        height: 46px;
-
-        i {
-          font-size: 20px;
-        }
-      }
-
-      .amenity-name {
-        font-size: 13px;
-      }
-    }
+  .destination-categories-header .luxury-section-title {
+    font-size: 25px;
   }
 
-  @media (max-width: 480px) {
-    .luxury-amenities-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
+  .destination-category-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .destination-category-card {
+    padding: 18px;
   }
 }
 </style>

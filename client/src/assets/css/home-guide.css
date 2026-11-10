@@ -1,5 +1,5 @@
 .hotel-home-guide {
-  padding: 65px 0;
+  padding: 72px 0;
   background: #fff;
 }
 
@@ -29,9 +29,10 @@
 .hotel-home-guide-empty {
   max-width: 650px;
   margin: 0 auto;
-  padding: 35px 20px;
-  border: 1px solid #eee8df;
-  border-radius: 8px;
+  padding: 38px 24px;
+  border: 1px solid rgba(223, 186, 115, 0.25);
+  border-radius: 14px;
+  background: #faf8f5;
   text-align: center;
 }
 

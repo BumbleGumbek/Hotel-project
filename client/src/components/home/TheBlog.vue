@@ -2,23 +2,17 @@
   <section class="hotel-home-guide">
     <div class="container">
       <div class="hotel-home-guide-heading">
-        <span>CẨM NANG KHÁCH SẠN</span>
-        <h3>Cẩm nang nghỉ dưỡng</h3>
+        <span>CẢM HỨNG DU LỊCH</span>
+        <h3>Bài viết mới nhất</h3>
         <p>
-          Những thông tin hữu ích dành cho kỳ nghỉ
-          và trải nghiệm lưu trú của bạn.
+          Câu chuyện, kinh nghiệm và gợi ý hữu ích cho những chuyến đi đáng nhớ.
         </p>
       </div>
 
       <div class="hotel-home-guide-empty">
-        <h4>Nội dung đang được cập nhật</h4>
-        <p>
-          Chúng tôi đang chuẩn bị những thông tin hữu ích
-          để mang đến trải nghiệm tốt hơn cho khách hàng.
-        </p>
-        <router-link to="/blog">
-          Khám phá cẩm nang
-        </router-link>
+        <h4>Chưa có bài viết được xuất bản</h4>
+        <p>Nội dung cẩm nang du lịch sẽ xuất hiện tại đây khi được cập nhật.</p>
+        <router-link to="/blog"> Xem cẩm nang </router-link>
       </div>
     </div>
   </section>
