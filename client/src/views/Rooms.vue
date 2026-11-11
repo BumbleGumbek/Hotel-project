@@ -6,10 +6,10 @@
         <div class="col-md-12">
           <div class="luxury-rooms-header">
             <span class="luxury-header-eyebrow">Trải nghiệm lưu trú</span>
-            <h1 class="luxury-header-title">Khám phá các hạng phòng</h1>
+            <h1 class="luxury-header-title">Khám phá nơi lưu trú</h1>
             <div class="luxury-header-divider"></div>
             <p class="luxury-header-desc">
-              Không gian nghỉ dưỡng tinh tế, mang đến sự thoải mái trong từng khoảnh khắc.
+              Tìm không gian phù hợp cho hành trình và điểm đến của bạn.
             </p>
           </div>
         </div>
@@ -36,106 +36,48 @@
                 <i class="im im-icon-Close"></i>
               </button>
             </div>
-
-            <!-- Bộ lọc 4 nút: Tất cả, VIP, Cao cấp, Tiêu chuẩn -->
-            <div class="luxury-filter-tabs">
-              <button
-                type="button"
-                class="luxury-tab-btn"
-                :class="{ active: selectedCategory === '' }"
-                @click="selectedCategory = ''"
-              >
-                <i class="im im-icon-Home"></i>
-                <span>Tất cả phòng</span>
-              </button>
-
-              <button
-                type="button"
-                class="luxury-tab-btn"
-                :class="{ active: selectedCategory === 'VIP' }"
-                @click="selectedCategory = 'VIP'"
-              >
-                <i class="im im-icon-Crown"></i>
-                <span>Hạng VIP</span>
-                <span class="tab-count">2 phòng</span>
-              </button>
-
-              <button
-                type="button"
-                class="luxury-tab-btn"
-                :class="{ active: selectedCategory === 'Cao cấp' }"
-                @click="selectedCategory = 'Cao cấp'"
-              >
-                <i class="im im-icon-Star"></i>
-                <span>Hạng Cao cấp</span>
-                <span class="tab-count">4 phòng</span>
-              </button>
-
-              <button
-                type="button"
-                class="luxury-tab-btn"
-                :class="{ active: selectedCategory === 'Tiêu chuẩn' }"
-                @click="selectedCategory = 'Tiêu chuẩn'"
-              >
-                <i class="im im-icon-Check"></i>
-                <span>Hạng Tiêu chuẩn</span>
-                <span class="tab-count">7 phòng</span>
-              </button>
-            </div>
           </div>
         </div>
       </section>
 
-      <!-- Danh sách phòng -->
-      <room-list :keyword="keyword" :category="selectedCategory" />
+      <div class="rooms-map-layout">
+        <room-list :keyword="keyword" />
+        <rooms-map />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, watch } from "vue";
+import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import RoomList from "../components/rooms/RoomList.vue";
+import RoomsMap from "../components/rooms/RoomsMap.vue";
 
 export default {
   name: "Rooms",
   components: {
     RoomList,
+    RoomsMap,
   },
 
   setup() {
     const store = useStore();
     const route = useRoute();
     const keyword = ref("");
-    const selectedCategory = ref("");
-
-    // Khởi tạo bộ lọc nếu có query param ?type=... từ Banner / ThePlaces
-    if (route.query && route.query.type) {
-      selectedCategory.value = route.query.type;
-    }
 
     watch(
-      () => route.query.type,
-      (newType) => {
-        selectedCategory.value = newType || "";
-      }
+      () => route.params.locationId,
+      (locationId) => {
+        keyword.value = "";
+        store.dispatch("rooms/getRoomListAction", locationId);
+      },
+      { immediate: true }
     );
-
-    onMounted(async () => {
-    const locationId = route.params.locationId;
-
-    try {
-      await store.dispatch("rooms/getRoomListAction", locationId);
-      console.log("Danh sách phòng từ Backend:", store.state.rooms.roomList);
-    } catch (error) {
-      console.error("Lỗi lấy danh sách phòng:", error);
-    }
-  });
 
     return {
       keyword,
-      selectedCategory,
     };
   },
 };
@@ -146,6 +88,13 @@ export default {
   background-color: #faf8f5;
   min-height: 100vh;
   padding-top: 10px;
+
+  .rooms-map-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    align-items: start;
+    gap: 28px;
+  }
 
   .luxury-rooms-header {
     text-align: center;
@@ -312,6 +261,11 @@ export default {
   }
 
   @media (max-width: 991px) {
+    .rooms-map-layout {
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.85fr);
+      gap: 18px;
+    }
+
     .luxury-rooms-header {
       .luxury-header-title {
         font-size: 30px;
@@ -320,6 +274,11 @@ export default {
   }
 
   @media (max-width: 767px) {
+    .rooms-map-layout {
+      grid-template-columns: 1fr;
+      gap: 26px;
+    }
+
     .luxury-rooms-header {
       margin-bottom: 25px;
 
