@@ -10,8 +10,8 @@
               alt="Logo khách sạn"
               />
             <div class="luxury-brand-title-box">
-              <span class="luxury-brand-title">Khách Sạn</span>
-              <span class="luxury-brand-subtitle">Boutique Hotel & Resort</span>
+              <span class="luxury-brand-title">StayFinder</span>
+              <span class="luxury-brand-subtitle">Khám phá &amp; đặt chỗ</span>
             </div>
           </router-link>
         </div>
@@ -55,14 +55,18 @@
               class="luxury-user-dropdown"
               @click="showDropdown = false"
             >
-              <li>
-                <router-link :to="`/user-profile/${customerUserId}`">
+              <li v-if="customerUserId">
+                <router-link
+                  :to="{ name: 'UserProfile', params: { userId: customerUserId } }"
+                >
                   <i class="im im-icon-Profile"></i>
                   <span>Thông tin tài khoản</span>
                 </router-link>
               </li>
-              <li>
-                <router-link :to="`/user-profile/${customerUserId}`">
+              <li v-if="customerUserId">
+                <router-link
+                  :to="{ name: 'UserProfile', params: { userId: customerUserId } }"
+                >
                   <i class="im im-icon-Suitcase"></i>
                   <span>Lịch sử đặt phòng</span>
                 </router-link>
@@ -136,20 +140,26 @@ export default {
     const mobileMenuOpen = ref(false);
 
     const userLogin = computed(() => store.state.auth.userLogin || {});
-
-    const isLoggedIn = computed(() => {
-      const u = userLogin.value;
-      return !!(u && (u._id || (u.user && u.user._id) || u.token));
-    });
-
-    const customerName = computed(() => {
-      const u = userLogin.value.user || userLogin.value;
-      return u && u.name ? u.name : "Quý khách";
+    const currentUser = computed(() => {
+      const login = userLogin.value;
+      return login.user && typeof login.user === "object" ? login.user : login;
     });
 
     const customerUserId = computed(() => {
-      const u = userLogin.value.user || userLogin.value;
-      return u && u._id ? u._id : "";
+      const user = currentUser.value;
+      const login = userLogin.value;
+      const id = user.id ?? user._id ?? login.id ?? login._id;
+      return id === undefined || id === null || id === "" ? "" : id;
+    });
+
+    const isLoggedIn = computed(() => {
+      const u = userLogin.value;
+      return Boolean(u && (customerUserId.value || u.token));
+    });
+
+    const customerName = computed(() => {
+      const u = currentUser.value;
+      return u && u.name ? u.name : "Quý khách";
     });
 
     const toggleUserDropdown = () => {

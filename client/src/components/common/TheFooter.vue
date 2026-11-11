@@ -2,13 +2,13 @@
   <footer class="luxury-footer-wrapper">
     <div class="container">
       <div class="row">
-        <!-- Cột 1: Giới thiệu khách sạn -->
+        <!-- Cột 1: Giới thiệu nền tảng -->
         <div class="col-md-5 col-sm-12">
           <div class="luxury-footer-brand">
-            <h3>Khách Sạn</h3>
-            <span class="brand-sub">Boutique Hotel & Resort</span>
+            <h3>StayFinder</h3>
+            <span class="brand-sub">Tìm kiếm &amp; đặt phòng</span>
             <p>
-              Không gian nghỉ dưỡng tinh tế, dịch vụ chu đáo và tiện nghi tiêu chuẩn. Chúng tôi tận tâm mang đến cho quý khách kỳ nghỉ thư thái và trọn vẹn nhất.
+              Khám phá và đặt chỗ lưu trú tại nhiều địa điểm, với những lựa chọn phù hợp cho mỗi hành trình.
             </p>
           </div>
         </div>
@@ -34,29 +34,29 @@
             </li>
             <li>
               <router-link to="/contact">
-                <i class="im im-icon-Right-2"></i> Liên hệ lễ tân
+                <i class="im im-icon-Right-2"></i> Liên hệ
               </router-link>
             </li>
           </ul>
         </div>
 
-        <!-- Cột 3: Tài khoản & Đặt phòng -->
+        <!-- Cột 3: Tài khoản & Hỗ trợ -->
         <div class="col-md-4 col-sm-6">
           <h4 class="luxury-footer-col-title">Tài khoản & Hỗ trợ</h4>
           <ul class="luxury-footer-links-list">
             <li>
               <router-link to="/sign-in">
-                <i class="im im-icon-Right-2"></i> Đăng nhập tài khoản
+                <i class="im im-icon-Right-2"></i> Đăng nhập
               </router-link>
             </li>
             <li>
               <router-link to="/sign-up">
-                <i class="im im-icon-Right-2"></i> Đăng ký thành viên
+                <i class="im im-icon-Right-2"></i> Đăng ký
               </router-link>
             </li>
             <li>
               <router-link to="/contact">
-                <i class="im im-icon-Right-2"></i> Gửi yêu cầu hỗ trợ
+                <i class="im im-icon-Right-2"></i> Hỗ trợ
               </router-link>
             </li>
           </ul>
@@ -67,7 +67,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="luxury-footer-bottom">
-            © 2026 Khách Sạn. All Rights Reserved. Thiết kế cho trải nghiệm nghỉ dưỡng cao cấp.
+            © 2026 StayFinder. Nền tảng tìm kiếm và đặt phòng lưu trú.
           </div>
         </div>
       </div>
