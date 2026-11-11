@@ -50,9 +50,9 @@
             <h1 class="luxury-detail-title">
               {{ roomDetail.name }}
             </h1>
-            <div v-if="roomDetail.locationId && roomDetail.locationId.province" class="luxury-detail-location">
+            <div v-if="roomAddress" class="luxury-detail-location">
               <i class="im im-icon-Location-2"></i>
-              <span>{{ roomDetail.locationId.province }}</span>
+              <span>{{ roomAddress }}</span>
             </div>
           </div>
 
@@ -64,7 +64,11 @@
         </header>
 
         <!-- A. Gallery Hình ảnh lớn & Thumbnail phụ -->
-        <section class="luxury-gallery-container">
+        <section
+          v-if="galleryImages.length"
+          class="luxury-gallery-container"
+          :class="{ 'single-image': galleryImages.length === 1 }"
+        >
           <div class="luxury-gallery-main" @click="activeMainImage = galleryImages[0]">
             <img
               :src="activeMainImage || galleryImages[0]"
@@ -176,8 +180,68 @@
                   <i class="im im-icon-Sun"></i>
                   <span>Hệ thống sưởi ấm</span>
                 </div>
+                <div v-if="roomDetail.indoorFireplace" class="luxury-amenity-pill">
+                  <i class="im im-icon-Fire-Flame"></i>
+                  <span>Lò sưởi trong nhà</span>
+                </div>
+                <div v-if="roomDetail.dryer" class="luxury-amenity-pill">
+                  <i class="im im-icon-Hair"></i>
+                  <span>Máy sấy</span>
+                </div>
+                <div v-if="roomDetail.gym" class="luxury-amenity-pill">
+                  <i class="im im-icon-Dumbbell"></i>
+                  <span>Phòng tập thể dục</span>
+                </div>
+                <div v-if="roomDetail.kitchen" class="luxury-amenity-pill">
+                  <i class="im im-icon-Home"></i>
+                  <span>Nhà bếp</span>
+                </div>
               </div>
             </article>
+
+            <section class="luxury-section-card luxury-room-reviews">
+              <h2 class="luxury-section-heading">
+                <i class="im im-icon-Star"></i>
+                <span>Đánh giá của khách</span>
+              </h2>
+
+              <p v-if="isLoadingReviews" class="luxury-reviews-state" role="status">
+                Đang tải đánh giá...
+              </p>
+              <p
+                v-else-if="reviewsError"
+                class="luxury-reviews-state error"
+                role="alert"
+              >
+                {{ reviewsError }}
+              </p>
+              <p v-else-if="!reviews.length" class="luxury-reviews-state">
+                Phòng này chưa có đánh giá.
+              </p>
+              <div v-else class="luxury-reviews-list">
+                <article
+                  v-for="(review, index) in reviews"
+                  :key="review.id || review._id || `${review.roomId}-${index}`"
+                  class="luxury-review-item"
+                >
+                  <div
+                    v-if="review.user && (review.user.avatar || review.user.name)"
+                    class="luxury-review-author"
+                  >
+                    <img
+                      v-if="review.user.avatar"
+                      :src="review.user.avatar"
+                      :alt="review.user.name || ''"
+                      loading="lazy"
+                    />
+                    <strong v-if="review.user.name">{{ review.user.name }}</strong>
+                  </div>
+                  <p v-if="review.content" class="luxury-review-content">
+                    {{ review.content }}
+                  </p>
+                </article>
+              </div>
+            </section>
           </main>
 
           <!-- Cột phải: Khung đặt phòng & Hỗ trợ lễ tân -->
@@ -212,7 +276,7 @@
                 </div>
 
                 <router-link
-                  :to="`/booking/${roomDetail._id}`"
+                  :to="{ name: 'Booking', params: { roomId } }"
                   class="luxury-booking-btn"
                 >
                   <span>Đặt phòng ngay</span>
@@ -257,7 +321,10 @@
           <span class="mobile-price-val">{{ formatPrice(roomDetail.price) }}</span>
           <span class="mobile-price-unit">VNĐ / đêm</span>
         </div>
-        <router-link :to="`/booking/${roomDetail._id}`" class="luxury-mobile-btn">
+        <router-link
+          :to="{ name: 'Booking', params: { roomId } }"
+          class="luxury-mobile-btn"
+        >
           <span>Đặt phòng</span>
           <i class="im im-icon-Right-2"></i>
         </router-link>
@@ -270,6 +337,7 @@
 import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import axiosAPI from "../api";
 
 export default {
   name: "RoomDetail",
@@ -282,10 +350,25 @@ export default {
     const selectedGuests = ref(1);
     const isLoading = ref(false);
     const loadError = ref("");
+    const reviews = ref([]);
+    const isLoadingReviews = ref(false);
+    const reviewsError = ref("");
+    let reviewsRequestId = 0;
 
     const roomDetail = computed(
       () => store.state.rooms.roomDetail || {}
     );
+    const roomId = computed(
+      () => route.params.roomId || roomDetail.value.id || roomDetail.value._id
+    );
+    const roomAddress = computed(() => {
+      const location = roomDetail.value.location;
+      if (!location) return "";
+
+      return [location.name, location.province, location.country]
+        .filter(Boolean)
+        .join(", ");
+    });
 
     // Kiểm tra xem đã có dữ liệu phòng hợp lệ hay chưa
     const hasRoomData = computed(() => {
@@ -296,8 +379,10 @@ export default {
     // Gọi API mỗi khi roomId thay đổi
     watch(
       () => route.params.roomId,
-      async (roomId) => {
-        if (!roomId) {
+      async (routeRoomId) => {
+        store.commit("rooms/setRoomDetailMutation", {});
+
+        if (!routeRoomId) {
           loadError.value = "Không tìm thấy mã phòng.";
           return;
         }
@@ -307,7 +392,7 @@ export default {
         activeMainImage.value = "";
 
         try {
-          await store.dispatch("rooms/getRoomDetailAction", roomId);
+          await store.dispatch("rooms/getRoomDetailAction", routeRoomId);
 
           if (!roomDetail.value || (!roomDetail.value._id && !roomDetail.value.id)) {
             loadError.value = "Không tìm thấy thông tin phòng nghỉ.";
@@ -320,6 +405,49 @@ export default {
           loadError.value = "Không thể tải thông tin phòng nghỉ. Quý khách vui lòng thử lại sau.";
         } finally {
           isLoading.value = false;
+        }
+      },
+      { immediate: true }
+    );
+
+    watch(
+      () => route.params.roomId,
+      async (routeRoomId) => {
+        const requestId = ++reviewsRequestId;
+        reviews.value = [];
+        reviewsError.value = "";
+
+        if (!routeRoomId) {
+          isLoadingReviews.value = false;
+          return;
+        }
+
+        isLoadingReviews.value = true;
+
+        try {
+          const result = await axiosAPI.get("/api/reviews/byRoom", {
+            params: { roomId: routeRoomId },
+          });
+
+          if (requestId !== reviewsRequestId) return;
+          if (!Array.isArray(result)) {
+            throw new TypeError("API đánh giá không trả về danh sách hợp lệ.");
+          }
+
+          reviews.value = result.filter(
+            (review) =>
+              review &&
+              String(review.roomId) === String(routeRoomId) &&
+              review.content
+          );
+        } catch (error) {
+          if (requestId !== reviewsRequestId) return;
+          console.error("Lỗi lấy đánh giá phòng:", error);
+          reviewsError.value = "Không thể tải đánh giá. Vui lòng thử lại sau.";
+        } finally {
+          if (requestId === reviewsRequestId) {
+            isLoadingReviews.value = false;
+          }
         }
       },
       { immediate: true }
@@ -350,32 +478,10 @@ export default {
       return "tier-standard";
     });
 
-    // Ưu tiên hình ảnh thực tế từ dữ liệu API nếu có
+    // The detail API provides one room image, not a gallery of separate photos.
     const galleryImages = computed(() => {
       const apiImage = roomDetail.value.image;
-      const validApiImage = apiImage && !apiImage.includes("listing-item") ? apiImage : null;
-
-      if (roomCategoryName.value === "Hạng VIP") {
-        return [
-          validApiImage || "/images/hotel/room-vip-suite.jpg",
-          "/images/hotel/room-vip-bedroom.jpg",
-          "/images/hotel/bathroom.jpg",
-        ];
-      }
-
-      if (roomCategoryName.value === "Hạng Cao cấp") {
-        return [
-          validApiImage || "/images/hotel/room-premium.jpg",
-          "/images/hotel/room-detail.jpg",
-          "/images/hotel/bathroom.jpg",
-        ];
-      }
-
-      return [
-        validApiImage || "/images/hotel/room-standard.jpg",
-        "/images/hotel/room-detail.jpg",
-        "/images/hotel/bathroom.jpg",
-      ];
+      return apiImage ? [apiImage] : [];
     });
 
     watch(
@@ -401,7 +507,11 @@ export default {
         room.hotTub ||
         room.cableTV ||
         room.elevator ||
-        room.heating
+        room.heating ||
+        room.indoorFireplace ||
+        room.dryer ||
+        room.gym ||
+        room.kitchen
       );
     });
 
@@ -422,11 +532,13 @@ export default {
     };
 
     const handleImageError = (event) => {
-      event.target.src = "/images/hotel/room-detail.jpg";
+      event.target.style.display = "none";
     };
 
     return {
       roomDetail,
+      roomId,
+      roomAddress,
       hasRoomData,
       roomCategoryName,
       roomCategoryClass,
@@ -438,6 +550,9 @@ export default {
       selectedGuests,
       isLoading,
       loadError,
+      reviews,
+      isLoadingReviews,
+      reviewsError,
       formatPrice,
       handleImageError,
     };
