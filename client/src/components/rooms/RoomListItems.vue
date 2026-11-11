@@ -1,6 +1,11 @@
 <template>
   <div class="luxury-room-card-wrapper">
-    <div class="luxury-room-item-card" @click="handleClickRoom">
+    <div
+      class="luxury-room-item-card"
+      :class="{ 'room-card-disabled': !roomId }"
+      :aria-disabled="!roomId"
+      @click="handleClickRoom"
+    >
       <!-- Media: Ảnh phòng lớn, sắc nét -->
       <div class="luxury-room-media">
         <img
@@ -63,7 +68,11 @@
           <span v-if="room.pool" class="amenity-tag" title="Hồ bơi">
             <i class="im im-icon-Swimming"></i> Hồ bơi
           </span>
-          <span v-if="room.hotTub" class="amenity-tag" title="Bồn tắm nước nóng">
+          <span
+            v-if="room.hotTub"
+            class="amenity-tag"
+            title="Bồn tắm nước nóng"
+          >
             <i class="im im-icon-Bathtub"></i> Bồn nước nóng
           </span>
           <span v-if="room.cableTV" class="amenity-tag" title="Truyền hình cáp">
@@ -79,7 +88,12 @@
 
         <!-- Nút hành động -->
         <div class="luxury-room-footer">
-          <button type="button" class="luxury-detail-btn" @click.stop="handleClickRoom">
+          <button
+            type="button"
+            class="luxury-detail-btn"
+            :disabled="!roomId"
+            @click.stop="handleClickRoom"
+          >
             <span>Xem chi tiết</span>
             <i class="im im-icon-Right-2"></i>
           </button>
@@ -109,8 +123,25 @@ export default {
   setup(props) {
     const router = useRouter();
 
+    const roomId = computed(() =>
+      props.room.id !== undefined && props.room.id !== null
+        ? props.room.id
+        : props.room._id
+    );
+
     const handleClickRoom = () => {
-      router.push(`/room-detail/${props.room._id}`);
+      if (
+        roomId.value === undefined ||
+        roomId.value === null ||
+        roomId.value === ""
+      ) {
+        return;
+      }
+
+      router.push({
+        name: "RoomDetail",
+        params: { roomId: roomId.value },
+      });
     };
 
     // Xác định hạng phòng dựa trên tên hoặc mô tả trong dữ liệu thực
@@ -121,7 +152,11 @@ export default {
       if (name.includes("vip") || desc.includes("vip")) {
         return "Hạng VIP";
       }
-      if (name.includes("cao cấp") || desc.includes("cao cấp") || name.includes("premium")) {
+      if (
+        name.includes("cao cấp") ||
+        desc.includes("cao cấp") ||
+        name.includes("premium")
+      ) {
         return "Hạng Cao cấp";
       }
       return "Hạng Tiêu chuẩn";
@@ -177,6 +212,7 @@ export default {
     };
 
     return {
+      roomId,
       handleClickRoom,
       roomCategoryName,
       roomCategoryClass,

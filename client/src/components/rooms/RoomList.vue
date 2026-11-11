@@ -2,9 +2,15 @@
   <section class="hotel-room-list luxury-room-list">
     <div class="luxury-list-heading">
       <div class="heading-left">
-        <h2>Danh sách phòng nghỉ</h2>
-        <span v-if="category" class="active-category-tag">
-          Hạng: {{ category }}
+        <h2>
+          {{
+            locationName
+              ? `Nơi lưu trú tại ${locationName}`
+              : "Danh sách nơi lưu trú"
+          }}
+        </h2>
+        <span v-if="keyword" class="active-category-tag">
+          Từ khóa: {{ keyword }}
         </span>
       </div>
 
@@ -37,7 +43,7 @@
     <div v-else-if="filteredRoomList.length > 0" class="luxury-room-grid">
       <room-list-items
         v-for="(room, index) in filteredRoomList"
-        :key="room._id || room.id || index"
+        :key="room.id !== undefined ? room.id : room._id || index"
         :room="room"
         :index="index"
       />
@@ -50,8 +56,11 @@
       </div>
       <h3>Không tìm thấy phòng phù hợp</h3>
       <p>
-        Không có phòng nào khớp với tiêu chí tìm kiếm hiện tại.
-        Quý khách vui lòng thử chọn hạng phòng khác hoặc xóa từ khóa tìm kiếm.
+        {{
+          keyword
+            ? "Không có nơi lưu trú nào khớp với từ khóa. Vui lòng thử tìm kiếm khác."
+            : "Hiện chưa có nơi lưu trú nào tại địa điểm này."
+        }}
       </p>
     </div>
   </section>
@@ -74,10 +83,6 @@ export default {
       type: String,
       default: "",
     },
-    category: {
-      type: String,
-      default: "",
-    },
   },
 
   setup(props) {
@@ -86,27 +91,20 @@ export default {
     const roomList = computed(() => store.state.rooms.roomList || []);
     const isLoading = computed(() => store.state.rooms.isLoadingRoomList);
     const loadError = computed(() => store.state.rooms.roomListError || "");
+    const locationName = computed(() => {
+      const location = roomList.value[0] && roomList.value[0].location;
+      return location && (location.province || location.name);
+    });
 
     const filteredRoomList = computed(() => {
       let list = roomList.value;
 
-      if (props.category) {
-        const cat = props.category.trim().toLowerCase();
-
-        list = list.filter((room) => {
-          const name = (room.name || "").toLowerCase();
-          const desc = (room.description || "").toLowerCase();
-
-          return name.includes(cat) || desc.includes(cat);
-        });
-      }
-
-      const search = props.keyword.trim().toLowerCase();
+      const search = props.keyword.trim().toLocaleLowerCase();
 
       if (search) {
         list = list.filter((room) => {
-          const name = (room.name || "").toLowerCase();
-          const desc = (room.description || "").toLowerCase();
+          const name = (room.name || "").toLocaleLowerCase();
+          const desc = (room.description || "").toLocaleLowerCase();
 
           return name.includes(search) || desc.includes(search);
         });
@@ -119,11 +117,11 @@ export default {
       filteredRoomList,
       isLoading,
       loadError,
+      locationName,
     };
   },
 };
 </script>
-
 
 <style lang="scss" scoped>
 .luxury-room-list {
@@ -174,8 +172,8 @@ export default {
 
   .luxury-room-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 28px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
   }
 
   .luxury-room-empty {
