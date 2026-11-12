@@ -44,9 +44,6 @@
         <!-- Room Header -->
         <header class="luxury-detail-header">
           <div class="luxury-detail-header-left">
-            <span class="luxury-detail-tier-badge" :class="roomCategoryClass">
-              {{ roomCategoryName }}
-            </span>
             <h1 class="luxury-detail-title">
               {{ roomDetail.name }}
             </h1>
@@ -283,31 +280,7 @@
                   <i class="im im-icon-Right-2"></i>
                 </router-link>
 
-                <p class="luxury-booking-note">
-                  <i class="im im-icon-Security-Check"></i>
-                  Cam kết giữ phòng và bảo mật thông tin đặt chỗ.
-                </p>
               </div>
-            </div>
-
-            <!-- F. Hỗ trợ khách hàng / Lễ tân -->
-            <div class="luxury-support-card">
-              <div class="luxury-support-header">
-                <div class="luxury-support-icon">
-                  <i class="im im-icon-Bell"></i>
-                </div>
-                <div>
-                  <h4>Bộ phận Lễ tân & Chăm sóc khách hàng</h4>
-                  <span>Hỗ trợ quý khách 24/7</span>
-                </div>
-              </div>
-              <p class="luxury-support-desc">
-                Quý khách có nhu cầu tư vấn dịch vụ hoặc yêu cầu hỗ trợ đặt phòng, vui lòng liên hệ bộ phận lễ tân.
-              </p>
-              <router-link to="/contact" class="luxury-contact-link-btn">
-                <i class="im im-icon-Support"></i>
-                <span>Liên hệ lễ tân</span>
-              </router-link>
             </div>
           </aside>
         </div>
@@ -453,31 +426,6 @@ export default {
       { immediate: true }
     );
 
-    const roomCategoryName = computed(() => {
-      const name = (roomDetail.value.name || "").toLowerCase();
-      const desc = (roomDetail.value.description || "").toLowerCase();
-
-      if (name.includes("vip") || desc.includes("vip")) {
-        return "Hạng VIP";
-      }
-
-      if (
-        name.includes("cao cấp") ||
-        desc.includes("cao cấp") ||
-        name.includes("premium")
-      ) {
-        return "Hạng Cao cấp";
-      }
-
-      return "Hạng Tiêu chuẩn";
-    });
-
-    const roomCategoryClass = computed(() => {
-      if (roomCategoryName.value === "Hạng VIP") return "tier-vip";
-      if (roomCategoryName.value === "Hạng Cao cấp") return "tier-premium";
-      return "tier-standard";
-    });
-
     // The detail API provides one room image, not a gallery of separate photos.
     const galleryImages = computed(() => {
       const apiImage = roomDetail.value.image;
@@ -540,8 +488,6 @@ export default {
       roomId,
       roomAddress,
       hasRoomData,
-      roomCategoryName,
-      roomCategoryClass,
       galleryImages,
       activeMainImage,
       hasQuickSpecs,
