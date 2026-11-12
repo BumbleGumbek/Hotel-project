@@ -9,26 +9,22 @@
       <!-- Media: Ảnh phòng lớn, sắc nét -->
       <div class="luxury-room-media">
         <img
-          :src="computedRoomImage"
+          v-if="room.image && !imageUnavailable"
+          :src="room.image"
           :alt="room.name"
           loading="lazy"
           @error="handleImageError"
         />
-
-        <!-- Badge hạng phòng -->
-        <span class="luxury-room-badge" :class="roomCategoryClass">
-          {{ roomCategoryName }}
-        </span>
+        <div v-else class="luxury-room-image-empty">Chưa có hình ảnh</div>
 
         <!-- Lớp gradient bảo vệ ánh sáng -->
-        <div class="media-overlay"></div>
+        <div v-if="room.image && !imageUnavailable" class="media-overlay"></div>
       </div>
 
       <!-- Content -->
       <div class="luxury-room-content">
         <div class="luxury-room-header">
           <div class="header-main">
-            <span class="luxury-tier-label">{{ roomCategoryName }}</span>
             <h3 class="luxury-room-title">{{ room.name }}</h3>
           </div>
           <div class="luxury-price-box">
@@ -104,7 +100,7 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
@@ -122,6 +118,7 @@ export default {
 
   setup(props) {
     const router = useRouter();
+    const imageUnavailable = ref(false);
 
     const roomId = computed(() =>
       props.room.id !== undefined && props.room.id !== null
@@ -144,55 +141,15 @@ export default {
       });
     };
 
-    // Xác định hạng phòng dựa trên tên hoặc mô tả trong dữ liệu thực
-    const roomCategoryName = computed(() => {
-      const name = (props.room.name || "").toLowerCase();
-      const desc = (props.room.description || "").toLowerCase();
-
-      if (name.includes("vip") || desc.includes("vip")) {
-        return "Hạng VIP";
+    watch(
+      () => props.room.image,
+      () => {
+        imageUnavailable.value = false;
       }
-      if (
-        name.includes("cao cấp") ||
-        desc.includes("cao cấp") ||
-        name.includes("premium")
-      ) {
-        return "Hạng Cao cấp";
-      }
-      return "Hạng Tiêu chuẩn";
-    });
+    );
 
-    const roomCategoryClass = computed(() => {
-      if (roomCategoryName.value === "Hạng VIP") return "tier-vip";
-      if (roomCategoryName.value === "Hạng Cao cấp") return "tier-premium";
-      return "tier-standard";
-    });
-
-    // Ưu tiên ảnh trong /images/hotel/ theo từng hạng phòng và bộ ảnh VIP
-    const computedRoomImage = computed(() => {
-      if (props.room.image && !props.room.image.includes("listing-item")) {
-        return props.room.image;
-      }
-
-      if (roomCategoryName.value === "Hạng VIP") {
-        const vipGallery = [
-          "/images/hotel/room-vip-suite.jpg",
-          "/images/hotel/room-vip-bedroom.jpg",
-          "/images/hotel/room-vip-lounge.jpg",
-          "/images/hotel/room-vip.jpg",
-        ];
-        return vipGallery[props.index % vipGallery.length];
-      }
-
-      if (roomCategoryName.value === "Hạng Cao cấp") {
-        return "/images/hotel/room-premium.jpg";
-      }
-
-      return "/images/hotel/room-standard.jpg";
-    });
-
-    const handleImageError = (e) => {
-      e.target.src = "/images/hotel/room-detail.jpg";
+    const handleImageError = () => {
+      imageUnavailable.value = true;
     };
 
     const hasAmenities = computed(() => {
@@ -214,9 +171,7 @@ export default {
     return {
       roomId,
       handleClickRoom,
-      roomCategoryName,
-      roomCategoryClass,
-      computedRoomImage,
+      imageUnavailable,
       handleImageError,
       hasAmenities,
       formatPrice,
@@ -289,36 +244,15 @@ export default {
       pointer-events: none;
     }
 
-    .luxury-room-badge {
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      z-index: 2;
-      padding: 5px 14px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
-      &.tier-vip {
-        background: rgba(30, 25, 20, 0.85);
-        color: #dfba73;
-        border: 1px solid rgba(223, 186, 115, 0.4);
-      }
-
-      &.tier-premium {
-        background: rgba(43, 37, 32, 0.85);
-        color: #f7ecd7;
-        border: 1px solid rgba(223, 186, 115, 0.25);
-      }
-
-      &.tier-standard {
-        background: rgba(56, 50, 44, 0.8);
-        color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-      }
+    .luxury-room-image-empty {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      color: #7a6e61;
+      font-size: 14px;
+      text-align: center;
     }
   }
 
@@ -337,16 +271,6 @@ export default {
 
       .header-main {
         flex: 1;
-
-        .luxury-tier-label {
-          font-size: 11px;
-          font-weight: 600;
-          letter-spacing: 1.5px;
-          text-transform: uppercase;
-          color: #b38e44;
-          display: block;
-          margin-bottom: 4px;
-        }
 
         .luxury-room-title {
           font-size: 20px;

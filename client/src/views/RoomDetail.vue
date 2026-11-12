@@ -311,6 +311,7 @@ import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import axiosAPI from "../api";
+import { getRoomDetailAPI } from "../api/rooms";
 
 export default {
   name: "RoomDetail",
@@ -326,6 +327,7 @@ export default {
     const reviews = ref([]);
     const isLoadingReviews = ref(false);
     const reviewsError = ref("");
+    let roomRequestId = 0;
     let reviewsRequestId = 0;
 
     const roomDetail = computed(
@@ -346,38 +348,64 @@ export default {
     // Kiểm tra xem đã có dữ liệu phòng hợp lệ hay chưa
     const hasRoomData = computed(() => {
       const r = roomDetail.value;
-      return Boolean(r && (r._id || r.id) && r.name);
+      const responseRoomId = r && (r.id ?? r._id);
+      return Boolean(
+        r &&
+          route.params.roomId &&
+          responseRoomId !== undefined &&
+          responseRoomId !== null &&
+          String(responseRoomId) === String(route.params.roomId) &&
+          r.name
+      );
     });
 
     // Gọi API mỗi khi roomId thay đổi
     watch(
       () => route.params.roomId,
       async (routeRoomId) => {
+        const requestId = ++roomRequestId;
         store.commit("rooms/setRoomDetailMutation", {});
+        activeMainImage.value = "";
+        loadError.value = "";
 
         if (!routeRoomId) {
           loadError.value = "Không tìm thấy mã phòng.";
+          isLoading.value = false;
           return;
         }
 
         isLoading.value = true;
-        loadError.value = "";
-        activeMainImage.value = "";
 
         try {
-          await store.dispatch("rooms/getRoomDetailAction", routeRoomId);
-
-          if (!roomDetail.value || (!roomDetail.value._id && !roomDetail.value.id)) {
-            loadError.value = "Không tìm thấy thông tin phòng nghỉ.";
+          const result = await getRoomDetailAPI(routeRoomId);
+          if (
+            requestId !== roomRequestId ||
+            String(route.params.roomId) !== String(routeRoomId)
+          ) {
             return;
           }
 
+          const resultRoomId = result && (result.id ?? result._id);
+          if (
+            resultRoomId === undefined ||
+            resultRoomId === null ||
+            String(resultRoomId) !== String(routeRoomId) ||
+            !result.name
+          ) {
+            loadError.value = "Không tìm thấy thông tin phòng cho mã này.";
+            return;
+          }
+
+          store.commit("rooms/setRoomDetailMutation", result);
           selectedGuests.value = 1;
         } catch (error) {
+          if (requestId !== roomRequestId) return;
           console.error("Lỗi lấy chi tiết phòng:", error);
           loadError.value = "Không thể tải thông tin phòng nghỉ. Quý khách vui lòng thử lại sau.";
         } finally {
-          isLoading.value = false;
+          if (requestId === roomRequestId) {
+            isLoading.value = false;
+          }
         }
       },
       { immediate: true }
