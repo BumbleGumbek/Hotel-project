@@ -2,16 +2,14 @@
   <section class="hotel-home-guide">
     <div class="container">
       <div class="hotel-home-guide-heading">
-        <span>CẢM HỨNG DU LỊCH</span>
-        <h3>Bài viết mới nhất</h3>
-        <p>
-          Câu chuyện, kinh nghiệm và gợi ý hữu ích cho những chuyến đi đáng nhớ.
-        </p>
+        <span>STAYFINDER | KHÁM PHÁ LƯU TRÚ</span>
+        <h3>Cẩm nang lưu trú</h3>
+        <p>Thông tin về tìm kiếm và đặt chỗ lưu trú tại nhiều địa điểm.</p>
       </div>
 
       <div class="hotel-home-guide-empty">
-        <h4>Chưa có bài viết được xuất bản</h4>
-        <p>Nội dung cẩm nang du lịch sẽ xuất hiện tại đây khi được cập nhật.</p>
+        <h4>Chưa có bài viết</h4>
+        <p>Hiện StayFinder chưa có dữ liệu bài viết để hiển thị.</p>
         <router-link to="/blog"> Xem cẩm nang </router-link>
       </div>
     </div>

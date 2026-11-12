@@ -5,8 +5,8 @@
         <span class="hotel-contact-label">CONTACT US</span>
         <h1>Liên hệ với chúng tôi</h1>
         <p>
-          Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn
-          trong quá trình tìm kiếm và đặt phòng.
+          Trang này hiện chưa kết nối hệ thống tiếp nhận liên hệ. Nội dung bạn
+          nhập sẽ không được gửi đi.
         </p>
       </div>
     </section>
@@ -16,9 +16,8 @@
         <span class="hotel-contact-label">WE ARE HERE TO HELP</span>
         <h2>Chúng tôi có thể hỗ trợ bạn điều gì?</h2>
         <p>
-          Nếu bạn có thắc mắc về thông tin phòng nghỉ,
-          quá trình đặt phòng hoặc cần hỗ trợ, hãy gửi
-          nội dung cho chúng tôi qua biểu mẫu liên hệ.
+          Biểu mẫu bên cạnh hiện chỉ cho phép nhập thông tin để kiểm tra dữ
+          liệu; StayFinder chưa có chức năng gửi hoặc lưu lời nhắn.
         </p>
       </div>
 
@@ -34,6 +33,8 @@
               type="text"
               placeholder="Nhập họ và tên"
               required
+              minlength="2"
+              maxlength="100"
             />
           </div>
 
@@ -45,6 +46,7 @@
               type="email"
               placeholder="Nhập địa chỉ email"
               required
+              maxlength="254"
             />
           </div>
 
@@ -56,6 +58,8 @@
               type="text"
               placeholder="Bạn cần hỗ trợ về vấn đề gì?"
               required
+              minlength="3"
+              maxlength="120"
             />
           </div>
 
@@ -67,10 +71,17 @@
               rows="5"
               placeholder="Nhập nội dung lời nhắn..."
               required
+              minlength="10"
+              maxlength="2000"
             ></textarea>
           </div>
 
-          <p v-if="notice" class="hotel-contact-notice">
+          <p
+            v-if="notice"
+            class="hotel-contact-notice"
+            role="status"
+            aria-live="polite"
+          >
             {{ notice }}
           </p>
 
@@ -100,8 +111,7 @@ export default {
 
     const handleSubmit = () => {
       notice.value =
-        "Biểu mẫu hiện chưa được kết nối hệ thống gửi liên hệ. Vui lòng thử lại sau.";
-
+        "Biểu mẫu chưa được kết nối. Thông tin bạn nhập chưa được gửi đi hoặc lưu lại.";
     };
 
     return {

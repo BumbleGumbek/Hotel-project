@@ -1,12 +1,9 @@
 <template>
   <section class="hotel-blog-heading">
     <div class="container">
-      <span>CẨM NANG KHÁCH SẠN</span>
-      <h1>Cẩm nang nghỉ dưỡng</h1>
-      <p>
-        Những thông tin hữu ích giúp bạn chuẩn bị cho
-        kỳ nghỉ và trải nghiệm lưu trú tốt hơn.
-      </p>
+      <span>STAYFINDER | KHÁM PHÁ LƯU TRÚ</span>
+      <h1>Cẩm nang lưu trú</h1>
+      <p>Thông tin về tìm kiếm và đặt chỗ lưu trú tại nhiều địa điểm.</p>
       <nav class="hotel-blog-breadcrumb">
         <router-link to="/">Trang chủ</router-link>
         <span>/</span>
