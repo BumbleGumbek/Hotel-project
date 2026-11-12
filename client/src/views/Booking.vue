@@ -14,8 +14,23 @@
         <span class="current">Xác nhận đặt phòng</span>
       </nav>
 
+      <section
+        v-if="isLoadingRoom"
+        class="luxury-booking-card luxury-room-load-state"
+        role="status"
+      >
+        Đang tải thông tin chỗ ở...
+      </section>
+      <section
+        v-else-if="roomLoadError"
+        class="luxury-booking-card luxury-room-load-state error"
+        role="alert"
+      >
+        {{ roomLoadError }}
+      </section>
+
       <!-- Main Layout -->
-      <div class="luxury-booking-layout">
+      <div v-else class="luxury-booking-layout">
         <!-- Cột trái: Form đặt phòng -->
         <main class="luxury-booking-left">
           <!-- Thông báo xác thực nếu chưa đăng nhập -->
@@ -132,35 +147,16 @@
             </div>
           </section>
 
-          <!-- Card 3: Yêu cầu đặc biệt (Special Requests) - Chỉ hiển thị giao diện, không đưa vào request Backend -->
-          <section class="luxury-booking-card">
-            <h2 class="luxury-booking-card-title">
-              <i class="im im-icon-Speach-Bubble"></i>
-              <span>3. Yêu cầu đặc biệt (Special Requests)</span>
-            </h2>
-
-            <div class="luxury-form-group">
-              <label>Ghi chú cho khách sạn</label>
-              <textarea
-                v-model="specialRequests"
-                rows="3"
-                placeholder="Ví dụ: Giờ check-in dự kiến, phòng tầng cao, giường phụ hoặc các yêu cầu lưu ý khác..."
-              ></textarea>
-              <p class="luxury-form-hint">
-                Lưu ý: Các yêu cầu đặc biệt tùy thuộc vào tình trạng phòng thực tế của khách sạn khi nhận phòng.
-              </p>
-            </div>
-          </section>
-
           <!-- Nút hành động xác nhận -->
           <div class="luxury-submit-action-area">
             <button
               type="button"
               class="luxury-confirm-booking-btn"
+              :disabled="isSubmitting"
               @click="handleBooking"
             >
-              <i class="im im-icon-Checked-User"></i>
-              <span>Xác nhận đặt phòng</span>
+              <i :class="isSubmitting ? 'im im-icon-Loading-3' : 'im im-icon-Checked-User'"></i>
+              <span>{{ isSubmitting ? "Đang gửi yêu cầu..." : "Xác nhận đặt phòng" }}</span>
             </button>
 
             <div v-if="errorMessage" class="luxury-booking-error-msg">
@@ -168,31 +164,25 @@
               <span>{{ errorMessage }}</span>
             </div>
 
-            <p class="luxury-booking-security-note">
-              <i class="im im-icon-Security-Check"></i>
-              <span>Hệ thống bảo mật dữ liệu đặt chỗ và tôn trọng quyền riêng tư của quý khách.</span>
-            </p>
           </div>
         </main>
 
         <!-- Cột phải: Tóm tắt đặt phòng -->
         <aside class="luxury-booking-sidebar">
           <div class="luxury-summary-card">
-            <!-- Ảnh phòng & Hạng phòng -->
+            <!-- Ảnh phòng từ listing -->
             <div class="luxury-summary-room-media">
-              <img
-                :src="computedRoomImage"
-                :alt="roomDetail.name"
-                loading="lazy"
-              />
-              <span class="luxury-summary-tier-tag">{{ roomCategoryName }}</span>
+              <img v-if="roomDetail.image" :src="roomDetail.image" :alt="roomDetail.name" loading="lazy" />
+              <div v-else class="luxury-summary-image-empty">
+                Chưa có hình ảnh cho chỗ ở này.
+              </div>
             </div>
 
             <div class="luxury-summary-body">
               <h3 class="luxury-summary-title">{{ roomDetail.name }}</h3>
-              <div v-if="roomDetail.locationId" class="luxury-summary-location">
+              <div v-if="roomDetail.location" class="luxury-summary-location">
                 <i class="im im-icon-Location-2"></i>
-                <span>{{ roomDetail.locationId.province || "Khách sạn" }}</span>
+                <span>{{ roomDetail.location.province || roomDetail.location.name }}</span>
               </div>
 
               <h4 class="luxury-summary-heading">
@@ -201,10 +191,6 @@
               </h4>
 
               <ul class="luxury-summary-list">
-                <li>
-                  <span class="item-label">Hạng phòng:</span>
-                  <span class="item-val">{{ roomCategoryName }}</span>
-                </li>
                 <li>
                   <span class="item-label">Nhận phòng:</span>
                   <span class="item-val">{{ formattedCheckIn || "Chưa chọn" }}</span>
@@ -232,14 +218,23 @@
               <!-- Tổng tiền nếu tính toán được -->
               <div class="luxury-summary-total-area">
                 <div class="luxury-summary-total-row">
-                  <span class="total-title">Tổng chi phí</span>
+                  <span class="total-title">Tổng tiền tạm tính</span>
                   <div>
-                    <span class="total-amount">{{ formatPrice(calculatedTotalPrice) }}</span>
-                    <span class="total-unit">VNĐ</span>
+                    <span class="total-amount">
+                      {{
+                        calculatedTotalPrice === null
+                          ? "Chưa tính"
+                          : formatPrice(calculatedTotalPrice)
+                      }}
+                    </span>
+                    <span v-if="calculatedTotalPrice !== null" class="total-unit">VNĐ</span>
                   </div>
                 </div>
                 <div v-if="totalNights > 0" class="luxury-summary-total-nights">
                   (Tạm tính cho {{ totalNights }} đêm)
+                </div>
+                <div v-else class="luxury-summary-total-nights">
+                  Chọn ngày nhận phòng và trả phòng hợp lệ để tính tổng.
                 </div>
               </div>
             </div>
@@ -251,9 +246,10 @@
 </template>
 
 <script>
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { getRoomDetailAPI } from "../api/rooms";
 
 export default {
   name: "Booking",
@@ -263,12 +259,52 @@ export default {
     const store = useStore();
 
     const routeRoomId = computed(() => route.params.roomId);
-
-    // Lấy thông tin phòng
-    store.dispatch("rooms/getRoomDetailAction", route.params.roomId);
-
     const userLogin = computed(() => store.state.auth.userLogin || {});
     const roomDetail = computed(() => store.state.rooms.roomDetail || {});
+    const isLoadingRoom = ref(false);
+    const roomLoadError = ref("");
+    let roomRequestId = 0;
+
+    watch(
+      routeRoomId,
+      async (roomId) => {
+        const requestId = ++roomRequestId;
+        store.commit("rooms/setRoomDetailMutation", {});
+        roomLoadError.value = "";
+
+        if (!roomId) {
+          isLoadingRoom.value = false;
+          roomLoadError.value = "Không tìm thấy mã chỗ ở.";
+          return;
+        }
+
+        isLoadingRoom.value = true;
+
+        try {
+          const result = await getRoomDetailAPI(roomId);
+
+          if (requestId !== roomRequestId) return;
+
+          const resultRoomId = result && (result.id ?? result._id);
+          if (!resultRoomId || String(resultRoomId) !== String(roomId)) {
+            roomLoadError.value = "Không tìm thấy thông tin chỗ ở.";
+            return;
+          }
+
+          store.commit("rooms/setRoomDetailMutation", result);
+        } catch (error) {
+          if (requestId !== roomRequestId) return;
+          console.error("Lỗi lấy chi tiết chỗ ở:", error);
+          roomLoadError.value =
+            "Không thể tải thông tin chỗ ở. Vui lòng thử lại sau.";
+        } finally {
+          if (requestId === roomRequestId) {
+            isLoadingRoom.value = false;
+          }
+        }
+      },
+      { immediate: true }
+    );
 
     // Kiểm tra đăng nhập
     const isLoggedIn = computed(() => {
@@ -293,8 +329,8 @@ export default {
     });
 
     const selectedGuests = ref(1);
-    const specialRequests = ref("");
     const errorMessage = ref("");
+    const isSubmitting = ref(false);
 
     // Ngày hôm nay dạng yyyy-mm-dd
     const todayString = computed(() => {
@@ -305,53 +341,65 @@ export default {
       return `${y}-${m}-${day}`;
     });
 
-    // Hạng phòng
-    const roomCategoryName = computed(() => {
-      const name = (roomDetail.value.name || "").toLowerCase();
-      const desc = (roomDetail.value.description || "").toLowerCase();
-      if (name.includes("vip") || desc.includes("vip")) {
-        return "Hạng VIP";
-      }
-      if (name.includes("cao cấp") || desc.includes("cao cấp") || name.includes("premium")) {
-        return "Hạng Cao cấp";
-      }
-      return "Hạng Tiêu chuẩn";
-    });
-
-    // Ảnh đại diện phòng
-    const computedRoomImage = computed(() => {
-      if (roomCategoryName.value === "Hạng VIP") {
-        return "/images/hotel/room-vip-suite.jpg";
-      }
-      if (roomCategoryName.value === "Hạng Cao cấp") {
-        return "/images/hotel/room-premium.jpg";
-      }
-      return "/images/hotel/room-standard.jpg";
-    });
-
     // Sức chứa dropdown
     const guestOptions = computed(() => {
       const max = roomDetail.value.guests || 2;
       return Array.from({ length: Math.max(max, 1) }, (_, i) => i + 1);
     });
 
-    // Số đêm lưu trú
+    watch(
+      guestOptions,
+      (options) => {
+        const maxGuests = options[options.length - 1] || 1;
+        if (selectedGuests.value > maxGuests) {
+          selectedGuests.value = maxGuests;
+        }
+      },
+      { immediate: true }
+    );
+
+    const toUtcDate = (dateString) => {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(dateString || "")) return null;
+
+      const [year, month, day] = dateString.split("-").map(Number);
+      const timestamp = Date.UTC(year, month - 1, day);
+      const parsedDate = new Date(timestamp);
+
+      if (
+        parsedDate.getUTCFullYear() !== year ||
+        parsedDate.getUTCMonth() !== month - 1 ||
+        parsedDate.getUTCDate() !== day
+      ) {
+        return null;
+      }
+
+      return timestamp;
+    };
+
+    // Chỉ đếm số ngày lịch hợp lệ, không phụ thuộc múi giờ hoặc DST.
     const totalNights = computed(() => {
-      if (!timeRequest.checkIn || !timeRequest.checkOut) return 0;
-      const start = new Date(timeRequest.checkIn);
-      const end = new Date(timeRequest.checkOut);
-      const diffTime = end - start;
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return diffDays > 0 ? diffDays : 0;
+      const checkIn = toUtcDate(timeRequest.checkIn);
+      const checkOut = toUtcDate(timeRequest.checkOut);
+      const today = toUtcDate(todayString.value);
+
+      if (
+        checkIn === null ||
+        checkOut === null ||
+        today === null ||
+        checkIn < today ||
+        checkOut <= checkIn
+      ) {
+        return 0;
+      }
+
+      return (checkOut - checkIn) / (24 * 60 * 60 * 1000);
     });
 
-    // Tổng tiền
+    // Không hiển thị giá một đêm như tổng khi chưa có khoảng ngày hợp lệ.
     const calculatedTotalPrice = computed(() => {
-      const price = Number(roomDetail.value.price) || 0;
-      if (totalNights.value > 0) {
-        return price * totalNights.value;
-      }
-      return price;
+      const price = Number(roomDetail.value.price);
+      if (totalNights.value === 0 || !Number.isFinite(price)) return null;
+      return price * totalNights.value;
     });
 
     const formatPrice = (val) => {
@@ -372,7 +420,8 @@ export default {
     const formattedCheckOut = computed(() => formatDate(timeRequest.checkOut));
 
     // Xử lý gửi đặt phòng - Bảo toàn chính xác cấu trúc request Backend
-    const handleBooking = () => {
+    const handleBooking = async () => {
+      if (isSubmitting.value) return;
       errorMessage.value = "";
 
       if (!isLoggedIn.value) {
@@ -404,15 +453,34 @@ export default {
         checkOut: timeRequest.checkOut,
       };
 
-      store.dispatch("rooms/bookingRoomAction", { data });
+      isSubmitting.value = true;
+      try {
+        await store.dispatch("rooms/bookingRoomAction", { data });
+      } catch (error) {
+        console.error("Lỗi tạo đặt phòng:", error);
+        errorMessage.value =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          "Không thể hoàn tất đặt phòng. Vui lòng thử lại sau.";
+        return;
+      } finally {
+        isSubmitting.value = false;
+      }
 
       // Lấy id an toàn để điều hướng trang cá nhân
+      const currentUser = userLogin.value.user || {};
       const targetUserId =
-        (userLogin.value.user && userLogin.value.user._id) ||
+        currentUser.id ??
+        currentUser._id ??
+        userLogin.value.id ??
         userLogin.value._id;
 
-      if (targetUserId) {
-        router.push(`/user-profile/${targetUserId}`);
+      if (targetUserId !== undefined && targetUserId !== null && targetUserId !== "") {
+        router.push({
+          name: "UserProfile",
+          params: { userId: targetUserId },
+        });
       } else {
         router.push("/");
       }
@@ -421,8 +489,8 @@ export default {
     return {
       routeRoomId,
       roomDetail,
-      roomCategoryName,
-      computedRoomImage,
+      isLoadingRoom,
+      roomLoadError,
       guestOptions,
       selectedGuests,
       timeRequest,
@@ -433,8 +501,8 @@ export default {
       formattedCheckOut,
       isLoggedIn,
       guestInfo,
-      specialRequests,
       errorMessage,
+      isSubmitting,
       handleBooking,
       formatPrice,
     };

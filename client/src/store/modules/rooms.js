@@ -43,10 +43,8 @@ const actions = {
     const roomDetail = await getRoomDetailAPI(payload);
     commit("setRoomDetailMutation", roomDetail);
   },
-  async bookingRoomAction({ commit }, { data }) {
-    const res = await bookingRoomAPI(data);
-    console.log(res);
-    console.log(commit);
+  async bookingRoomAction(_, { data }) {
+    return bookingRoomAPI(data);
   },
 };
 
