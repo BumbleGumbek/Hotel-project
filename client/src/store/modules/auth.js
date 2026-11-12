@@ -1,47 +1,116 @@
 import { signInAPI, signUpAPI } from "../../api/auth";
 
-const state = () => {
+const normalizeUserLogin = (payload) => {
+  if (!payload || typeof payload !== "object") return null;
+
+  const user = payload.user;
+  const id = user && (user.id ?? user._id);
+  if (
+    typeof payload.token !== "string" ||
+    !payload.token ||
+    !user ||
+    typeof user !== "object" ||
+    id === undefined ||
+    id === null ||
+    String(id).trim() === ""
+  ) {
+    return null;
+  }
+
+  const safeUser = { ...user };
+  delete safeUser.password;
   return {
-    userRegister: {},
-    userLogin: {},
+    token: payload.token,
+    user: safeUser,
   };
 };
+
+const normalizeRegisteredUser = (response) => {
+  const user = response && response.user;
+  const id = user && (user.id ?? user._id);
+  if (
+    !user ||
+    typeof user !== "object" ||
+    id === undefined ||
+    id === null ||
+    String(id).trim() === ""
+  ) {
+    return null;
+  }
+
+  const safeUser = { ...user };
+  delete safeUser.password;
+  return {
+    message: response.message,
+    user: safeUser,
+  };
+};
+
+const state = () => ({
+  userRegister: {},
+  userLogin: {},
+});
 
 const mutations = {
   setUserRegisterMutation(state, payload) {
     state.userRegister = payload;
   },
   setUserLoginMutation(state, payload) {
-    state.userLogin = payload;
-    localStorage.setItem("userLogin", JSON.stringify(payload));
+    const userLogin = normalizeUserLogin(payload);
+    if (!userLogin) {
+      throw new TypeError("Phản hồi đăng nhập không hợp lệ.");
+    }
+    localStorage.setItem("userLogin", JSON.stringify(userLogin));
+    state.userLogin = userLogin;
   },
   setUserLoginFromLocalStorage(state, payload) {
-    state.userLogin = payload;
+    state.userLogin = normalizeUserLogin(payload) || {};
   },
 };
 
 const actions = {
-  async signUpAction({ commit }, { data, router }) {
-    const userRegister = await signUpAPI(data);
-    router.push("/sign-in");
-    commit("setUserRegisterMutation", userRegister);
-  },
-  async signInAction({ commit }, { data, router }) {
-    try {
-      const userLogin = await signInAPI(data);
-      router.push("/");
-      commit("setUserLoginMutation", userLogin);
-    } catch (error) {
-      alert("tài khoản hoặc mất khẩu không chính xác");
-      localStorage;
+  async signUpAction({ commit }, { data }) {
+    const response = await signUpAPI(data);
+    const userRegister = normalizeRegisteredUser(response);
+    if (!userRegister) {
+      throw new TypeError("Phản hồi đăng ký không hợp lệ.");
     }
+    commit("setUserRegisterMutation", userRegister);
+    return userRegister;
+  },
+  async signInAction({ commit }, { data }) {
+    const response = await signInAPI(data);
+    const userLogin = normalizeUserLogin(response);
+    if (!userLogin) {
+      throw new TypeError("Phản hồi đăng nhập không hợp lệ.");
+    }
+    commit("setUserLoginMutation", userLogin);
+    return userLogin;
   },
   loadUserLoginFromLocalStorageAction({ commit }) {
-    let userLogin = {};
-    if (localStorage.getItem("userLogin")) {
-      userLogin = JSON.parse(localStorage.getItem("userLogin"));
+    const storedLogin = localStorage.getItem("userLogin");
+    if (!storedLogin) {
+      commit("setUserLoginFromLocalStorage", {});
+      return;
     }
-    commit("setUserLoginFromLocalStorage", userLogin);
+
+    let parsedLogin;
+    try {
+      parsedLogin = JSON.parse(storedLogin);
+    } catch {
+      localStorage.removeItem("userLogin");
+      commit("setUserLoginFromLocalStorage", {});
+      return;
+    }
+
+    const userLogin = normalizeUserLogin(parsedLogin);
+    if (!userLogin) {
+      localStorage.removeItem("userLogin");
+      commit("setUserLoginFromLocalStorage", {});
+      return;
+    }
+
+    commit("setUserLoginMutation", userLogin);
   },
 };
 

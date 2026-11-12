@@ -7,7 +7,11 @@
 
     <div class="luxury-auth-card">
       <!-- Nút quay lại trang chủ -->
-      <router-link to="/" class="luxury-auth-close-btn" title="Trở về trang chủ">
+      <router-link
+        to="/"
+        class="luxury-auth-close-btn"
+        title="Trở về trang chủ"
+      >
         <i class="im im-icon-Close"></i>
       </router-link>
 
@@ -52,17 +56,18 @@
           </div>
         </div>
 
-        <div class="luxury-auth-extras">
-          <label class="luxury-auth-remember">
-            <input type="checkbox" id="remember-me" name="remember" />
-            <span>Ghi nhớ đăng nhập</span>
-          </label>
-          <a href="#" class="luxury-forgot-link" @click.prevent>Quên mật khẩu?</a>
-        </div>
+        <p v-if="errorMessage" class="luxury-auth-error" role="alert">
+          {{ errorMessage }}
+        </p>
 
-        <button type="submit" class="luxury-auth-submit-btn">
-          <span>Đăng nhập</span>
-          <i class="im im-icon-Right-2"></i>
+        <button
+          type="submit"
+          class="luxury-auth-submit-btn"
+          :disabled="isSubmitting"
+          :aria-busy="isSubmitting"
+        >
+          <span>{{ isSubmitting ? "Đang đăng nhập..." : "Đăng nhập" }}</span>
+          <i v-if="!isSubmitting" class="im im-icon-Right-2"></i>
         </button>
       </form>
 
@@ -78,7 +83,7 @@
 </template>
 
 <script>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -92,13 +97,36 @@ export default {
       email: "",
       password: "",
     });
+    const isSubmitting = ref(false);
+    const errorMessage = ref("");
 
-    const handleSubmit = () => {
-      store.dispatch("auth/signInAction", { data: userLogin, router });
+    const handleSubmit = async () => {
+      if (isSubmitting.value) return;
+      errorMessage.value = "";
+      isSubmitting.value = true;
+      try {
+        await store.dispatch("auth/signInAction", { data: userLogin });
+      } catch (error) {
+        errorMessage.value =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          "Không thể đăng nhập. Vui lòng kiểm tra thông tin và thử lại.";
+        isSubmitting.value = false;
+        return;
+      }
+
+      try {
+        await router.push("/");
+      } finally {
+        isSubmitting.value = false;
+      }
     };
 
     return {
       userLogin,
+      isSubmitting,
+      errorMessage,
       handleSubmit,
     };
   },

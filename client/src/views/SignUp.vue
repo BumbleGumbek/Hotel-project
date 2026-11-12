@@ -7,7 +7,11 @@
 
     <div class="luxury-auth-card luxury-auth-card-wide">
       <!-- Nút quay lại trang chủ -->
-      <router-link to="/" class="luxury-auth-close-btn" title="Trở về trang chủ">
+      <router-link
+        to="/"
+        class="luxury-auth-close-btn"
+        title="Trở về trang chủ"
+      >
         <i class="im im-icon-Close"></i>
       </router-link>
 
@@ -16,7 +20,8 @@
         <span class="luxury-auth-eyebrow">Trải nghiệm nghỉ dưỡng</span>
         <h1 class="luxury-auth-title">Đăng ký tài khoản</h1>
         <p class="luxury-auth-subtitle">
-          Tạo tài khoản để dễ dàng quản lý đặt phòng và tận hưởng các ưu đãi đặc quyền.
+          Tạo tài khoản để dễ dàng quản lý đặt phòng và tận hưởng các ưu đãi đặc
+          quyền.
         </p>
       </div>
 
@@ -122,20 +127,32 @@
           <label>Ngày sinh</label>
           <div class="luxury-birthday-selects">
             <select v-model="userRegister.day" required>
-              <option value="" disabled selected>Ngày</option>
-              <option v-for="(day, index) in arrayDay" :key="index" :value="day">
+              <option value="" disabled>Ngày</option>
+              <option
+                v-for="(day, index) in arrayDay"
+                :key="index"
+                :value="day"
+              >
                 {{ day }}
               </option>
             </select>
             <select v-model="userRegister.month" required>
-              <option value="" disabled selected>Tháng</option>
-              <option v-for="(month, index) in arrayMonth" :key="index" :value="month">
+              <option value="" disabled>Tháng</option>
+              <option
+                v-for="(month, index) in arrayMonth"
+                :key="index"
+                :value="month"
+              >
                 Tháng {{ month }}
               </option>
             </select>
             <select v-model="userRegister.year" required>
-              <option value="" disabled selected>Năm</option>
-              <option v-for="(year, index) in arrayYear" :key="index" :value="year">
+              <option value="" disabled>Năm</option>
+              <option
+                v-for="(year, index) in arrayYear"
+                :key="index"
+                :value="year"
+              >
                 {{ year }}
               </option>
             </select>
@@ -158,9 +175,20 @@
           </div>
         </div>
 
-        <button type="submit" class="luxury-auth-submit-btn">
-          <span>Đăng ký tài khoản</span>
-          <i class="im im-icon-Right-2"></i>
+        <p v-if="errorMessage" class="luxury-auth-error" role="alert">
+          {{ errorMessage }}
+        </p>
+
+        <button
+          type="submit"
+          class="luxury-auth-submit-btn"
+          :disabled="isSubmitting"
+          :aria-busy="isSubmitting"
+        >
+          <span>
+            {{ isSubmitting ? "Đang đăng ký..." : "Đăng ký tài khoản" }}
+          </span>
+          <i v-if="!isSubmitting" class="im im-icon-Right-2"></i>
         </button>
       </form>
 
@@ -176,7 +204,7 @@
 </template>
 
 <script>
-import { reactive } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import { createArrayNumber } from "../utils/createArrayNumber";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -196,36 +224,106 @@ export default {
       year: "",
       month: "",
       day: "",
-      gender: false,
+      gender: "false",
       address: "",
     });
 
-    const handleSubmit = () => {
-      if (userRegister.password === userRegister.repeatPassword) {
-        const data = {
-          name: userRegister.name,
-          email: userRegister.email,
-          password: userRegister.password,
-          phone: userRegister.phone,
-          birthday: `${userRegister.year}/${userRegister.month}/${userRegister.day}`,
-          gender: userRegister.gender === "true",
-          address: userRegister.address,
-        };
-        store.dispatch("auth/signUpAction", { data, router });
-      } else {
-        alert("Mật khẩu không khớp");
+    const isSubmitting = ref(false);
+    const errorMessage = ref("");
+    const arrayMonth = createArrayNumber(1, 12);
+    const arrayYear = createArrayNumber(1900, new Date().getFullYear());
+    const arrayDay = computed(() => {
+      if (!userRegister.month || !userRegister.year) {
+        return createArrayNumber(1, 31);
+      }
+      const daysInMonth = new Date(
+        Number(userRegister.year),
+        Number(userRegister.month),
+        0
+      ).getDate();
+      return createArrayNumber(1, daysInMonth);
+    });
+
+    watch(
+      () => [userRegister.month, userRegister.year],
+      () => {
+        if (
+          userRegister.day &&
+          Number(userRegister.day) > arrayDay.value.length
+        ) {
+          userRegister.day = "";
+        }
+      }
+    );
+
+    const handleSubmit = async () => {
+      if (isSubmitting.value) return;
+      errorMessage.value = "";
+
+      if (userRegister.password !== userRegister.repeatPassword) {
+        errorMessage.value = "Mật khẩu nhập lại không khớp.";
+        return;
+      }
+
+      const year = Number(userRegister.year);
+      const month = Number(userRegister.month);
+      const day = Number(userRegister.day);
+      const birthday = new Date(Date.UTC(year, month - 1, day));
+      const today = new Date();
+      const todayUtc = Date.UTC(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+      );
+      if (
+        !Number.isInteger(year) ||
+        !Number.isInteger(month) ||
+        !Number.isInteger(day) ||
+        birthday.getUTCFullYear() !== year ||
+        birthday.getUTCMonth() !== month - 1 ||
+        birthday.getUTCDate() !== day ||
+        birthday.getTime() > todayUtc
+      ) {
+        errorMessage.value = "Ngày sinh không hợp lệ hoặc nằm trong tương lai.";
+        return;
+      }
+
+      const data = {
+        name: userRegister.name,
+        email: userRegister.email,
+        password: userRegister.password,
+        phone: userRegister.phone,
+        birthday: `${year}/${month}/${day}`,
+        gender: userRegister.gender === "true",
+        address: userRegister.address,
+      };
+
+      isSubmitting.value = true;
+      try {
+        try {
+          await store.dispatch("auth/signUpAction", { data });
+        } catch (error) {
+          errorMessage.value =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            "Không thể đăng ký. Vui lòng kiểm tra thông tin và thử lại.";
+          return;
+        }
+
+        await router.push("/sign-in");
+      } finally {
+        isSubmitting.value = false;
       }
     };
-
-    const arrayMonth = createArrayNumber(1, 12);
-    const arrayYear = createArrayNumber(1970, 2022);
-    const arrayDay = createArrayNumber(1, 31);
 
     return {
       arrayMonth,
       arrayYear,
       arrayDay,
       userRegister,
+      isSubmitting,
+      errorMessage,
       handleSubmit,
     };
   },

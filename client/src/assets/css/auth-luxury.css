@@ -199,40 +199,15 @@
   background: #ffffff;
 }
 
-/* Extras row (Remember me & Forgot pass) */
-.luxury-auth-extras {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 4px;
+.luxury-auth-error {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(169, 57, 48, 0.25);
+  border-radius: 8px;
+  background: #fff6f5;
+  color: #a93930;
   font-size: 13px;
-}
-
-.luxury-auth-remember {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #63574c;
-  cursor: pointer;
-  user-select: none;
-}
-
-.luxury-auth-remember input {
-  accent-color: #b38e44;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-}
-
-.luxury-forgot-link {
-  color: #b38e44;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.luxury-forgot-link:hover {
-  color: #2b2520;
-  text-decoration: underline;
+  line-height: 1.45;
 }
 
 /* Submit Button */
@@ -261,6 +236,12 @@
   color: #ffffff;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(179, 142, 68, 0.25);
+}
+
+.luxury-auth-submit-btn:disabled {
+  cursor: wait;
+  opacity: 0.7;
+  transform: none;
 }
 
 /* Footer Switch Links */
