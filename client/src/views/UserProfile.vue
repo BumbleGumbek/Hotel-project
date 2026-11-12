@@ -1,5 +1,5 @@
 <template>
-  <div id="wrapper" class="luxury-profile-page">
+  <div v-if="isProfileAuthorized" id="wrapper" class="luxury-profile-page">
     <div class="container luxury-profile-container">
       <!-- Breadcrumbs -->
       <nav class="luxury-profile-breadcrumbs">
@@ -205,25 +205,80 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 export default {
   name: "UserProfile",
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const store = useStore();
 
-    store.dispatch("auth/loadUserLoginFromLocalStorageAction");
-    store.dispatch("ticket/getTicketListByUserAction", route.params.userId);
+    const getLoginUserId = (login = {}) => {
+      const user =
+        login.user && typeof login.user === "object" ? login.user : {};
+      const id = user.id ?? user._id ?? login.id ?? login._id;
+      return id === undefined || id === null || String(id).trim() === ""
+        ? null
+        : String(id).trim();
+    };
+
+    let storedUserLogin = {};
+    const storedLogin = localStorage.getItem("userLogin");
+    if (storedLogin) {
+      try {
+        const parsedLogin = JSON.parse(storedLogin);
+        if (parsedLogin && typeof parsedLogin === "object") {
+          storedUserLogin = parsedLogin;
+        }
+      } catch {
+        localStorage.removeItem("userLogin");
+      }
+    }
+
+    if (
+      !getLoginUserId(store.state.auth.userLogin) &&
+      getLoginUserId(storedUserLogin)
+    ) {
+      store.commit("auth/setUserLoginFromLocalStorage", storedUserLogin);
+    }
 
     const userLogin = computed(() => store.state.auth.userLogin || {});
+    const currentUserId = computed(() => getLoginUserId(userLogin.value));
     const roomsByUser = computed(() => store.state.ticket.roomsByUser || []);
+    const isProfileAuthorized = ref(false);
 
     const currentCustomer = computed(() => {
-      return userLogin.value.user || userLogin.value || {};
+      const user = userLogin.value.user;
+      return user && typeof user === "object" ? user : userLogin.value;
     });
+
+    watch(
+      () => [route.params.userId, currentUserId.value],
+      ([routeUserId, loggedInUserId]) => {
+        isProfileAuthorized.value = false;
+
+        if (!loggedInUserId) {
+          router.replace({ name: "SignIn" });
+          return;
+        }
+
+        if (String(routeUserId || "") !== loggedInUserId) {
+          router.replace({
+            name: "UserProfile",
+            params: { userId: loggedInUserId },
+          });
+          return;
+        }
+
+        store.commit("ticket/setTicketListByUserMutation", []);
+        isProfileAuthorized.value = true;
+        store.dispatch("ticket/getTicketListByUserAction", loggedInUserId);
+      },
+      { immediate: true }
+    );
 
     const formatPrice = (val) => {
       if (!val && val !== 0) return "Liên hệ";
@@ -247,6 +302,7 @@ export default {
 
     return {
       currentCustomer,
+      isProfileAuthorized,
       roomsByUser,
       formatPrice,
       formatBirthday,
