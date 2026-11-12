@@ -107,25 +107,41 @@
               <!-- Media ảnh phòng -->
               <div class="luxury-booking-card-media">
                 <img
-                  :src="getBookingImage(booking)"
+                  v-if="booking.image"
+                  :src="booking.image"
                   :alt="booking.name"
                   loading="lazy"
                 />
-                <span class="luxury-booking-tier-tag">
-                  {{ getBookingTier(booking) }}
-                </span>
+                <div v-else class="luxury-booking-image-empty">
+                  Chưa có hình ảnh
+                </div>
               </div>
 
               <!-- Nội dung chi tiết vé đặt -->
               <div class="luxury-booking-card-body">
                 <div class="luxury-booking-card-top">
                   <div>
-                    <h3 class="luxury-booking-card-title">{{ booking.name || "Phòng nghỉ khách sạn" }}</h3>
+                    <h3 v-if="booking.name" class="luxury-booking-card-title">
+                      {{ booking.name }}
+                    </h3>
                   </div>
 
                   <div class="luxury-booking-price-badge">
-                    <span class="price-num">{{ formatPrice(booking.price) }}</span>
-                    <span class="price-sub">VNĐ / đêm</span>
+                    <span class="price-num">
+                      {{
+                        booking.price !== undefined && booking.price !== null
+                          ? formatPrice(booking.price)
+                          : "Chưa có giá"
+                      }}
+                    </span>
+                    <span
+                      v-if="
+                        booking.price !== undefined && booking.price !== null
+                      "
+                      class="price-sub"
+                    >
+                      VNĐ / đêm
+                    </span>
                   </div>
                 </div>
 
@@ -148,14 +164,16 @@
 
                 <!-- Footer thông tin và link xem chi tiết phòng -->
                 <div class="luxury-booking-card-footer">
-                  <span class="luxury-booking-id">
-                    Mã đặt phòng: <strong>#{{ (booking._id || "").slice(-6).toUpperCase() || "HOTEL" }}</strong>
+                  <span v-if="booking.bookingId" class="luxury-booking-id">
+                    Mã đặt phòng:
+                    <strong>
+                      #{{ String(booking.bookingId).slice(-6).toUpperCase() }}
+                    </strong>
                   </span>
 
-                  <!-- Link xem chi tiết phòng thực tế nếu có roomId -->
                   <router-link
-                    v-if="booking._id"
-                    :to="`/room-detail/${booking._id}`"
+                    v-if="booking.id || booking.roomId"
+                    :to="`/room-detail/${booking.id || booking.roomId}`"
                     class="luxury-view-room-link"
                   >
                     <span>Xem lại phòng</span>
@@ -227,31 +245,12 @@ export default {
       return `${day}/${month}/${year}`;
     };
 
-    const getBookingTier = (booking) => {
-      const name = (booking.name || "").toLowerCase();
-      if (name.includes("vip")) return "Hạng VIP";
-      if (name.includes("cao cấp") || name.includes("premium")) return "Hạng Cao cấp";
-      return "Hạng Tiêu chuẩn";
-    };
-
-    const getBookingImage = (booking) => {
-      if (booking.image && !booking.image.includes("listing-item")) {
-        return booking.image;
-      }
-      const tier = getBookingTier(booking);
-      if (tier === "Hạng VIP") return "/images/hotel/room-vip-suite.jpg";
-      if (tier === "Hạng Cao cấp") return "/images/hotel/room-premium.jpg";
-      return "/images/hotel/room-standard.jpg";
-    };
-
     return {
       currentCustomer,
       roomsByUser,
       formatPrice,
       formatBirthday,
       formatDateTime,
-      getBookingTier,
-      getBookingImage,
     };
   },
 };

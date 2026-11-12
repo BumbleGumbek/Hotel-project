@@ -271,6 +271,18 @@
   display: block;
 }
 
+.luxury-booking-image-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 180px;
+  padding: 16px;
+  color: #7a6e61;
+  font-size: 13px;
+  text-align: center;
+}
+
 .luxury-booking-tier-tag {
   position: absolute;
   top: 12px;

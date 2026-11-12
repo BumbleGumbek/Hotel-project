@@ -9,12 +9,13 @@ const state = () => {
 const mutations = {
   setTicketListByUserMutation(state, payload) {
     const data = payload.map((item) => ({
+      ...(item.room || {}),
       _id: item.id,
+      bookingId: item.id,
+      roomId: item.roomId,
       checkIn: item.checkIn,
       checkOut: item.checkOut,
-      ...item.roomId,
     }));
-    console.log(data);
     state.roomsByUser = data;
   },
 };
@@ -22,7 +23,6 @@ const mutations = {
 const actions = {
   async getTicketListByUserAction({ commit }, payload) {
     const data = await getTicketListByUserAPI(payload);
-    console.log(data);
     commit("setTicketListByUserMutation", data);
   },
 };
